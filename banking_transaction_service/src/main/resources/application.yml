@@ -1,0 +1,9 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group-account
+
+
+server:
+  port: 8003
