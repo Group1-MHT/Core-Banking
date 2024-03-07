@@ -20,8 +20,9 @@ public class AccountConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(AccountConsumer.class);
 
-    @KafkaListener(topics = "account-topic",groupId = "")
+    @KafkaListener(topics = "change-balance",groupId = "")
     public void consume(String message){
+
         logger.info(message);
     }
 }
