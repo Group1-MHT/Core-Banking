@@ -2,6 +2,7 @@ package akdemy.edu.service_impl;
 
 import akdemy.edu.exception.AppException;
 import akdemy.edu.exception.ErrorCode;
+import akdemy.edu.exception.TransactionException;
 import akdemy.edu.model.Balance;
 import akdemy.edu.repository.BalanceRepository;
 import akdemy.edu.service_i.BalanceService;
@@ -30,7 +31,7 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public Balance getBalance(Long accountId) {
-        return balanceRepository.findById(accountId).orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+        return balanceRepository.findById(accountId).orElseThrow(() -> new TransactionException(ErrorCode.ACCOUNT_NOT_FOUND));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class BalanceServiceImpl implements BalanceService {
 
     private void isBalanceEnough(Balance balance, BigDecimal amount) {
         if (balance.getBalance().compareTo(amount) < 0) {
-            throw new AppException(ErrorCode.ACCOUNT_NOT_ENOUGH_MONEY);
+            throw new TransactionException(ErrorCode.ACCOUNT_NOT_ENOUGH_MONEY);
         }
     }
 
