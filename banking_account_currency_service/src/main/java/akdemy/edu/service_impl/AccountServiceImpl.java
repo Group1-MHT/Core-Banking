@@ -3,7 +3,6 @@ package akdemy.edu.service_impl;
 import akdemy.edu.service_i.AccountService;
 import akdemy.edu.model.Account;
 import akdemy.edu.repository.AccountRepository;
-import akdemy.edu.service_impl.SyncService.AccountProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +11,6 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountProducer accountProducer;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -21,17 +18,13 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public Account createAccount(Account account) {
-        Account newAccount = accountRepository.save(account);
-        accountProducer.sendAccountToTrasactionService(newAccount);
-        return newAccount;
+        return accountRepository.save(account);
     }
 
     @Transactional
     @Override
     public Account updateAccount(Account account) {
-        Account newAccount = accountRepository.save(account);
-        accountProducer.sendAccountToTrasactionService(newAccount);
-        return newAccount;
+        return accountRepository.save(account);
     }
 
     @Transactional
