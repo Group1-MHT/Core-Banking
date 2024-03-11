@@ -1,9 +1,10 @@
 package akdemy.edu.service_impl;
 
+import akdemy.edu.exception.AppException;
+import akdemy.edu.exception.ErrorCode;
 import akdemy.edu.model.Currency;
 import akdemy.edu.repository.CurrencyRepository;
 import akdemy.edu.service_i.CurrencyService;
-import akdemy.edu.share.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -29,11 +30,11 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Transactional
     @Override
-    public Currency createCurrency(Currency currency) throws BaseException {
+    public Currency createCurrency(Currency currency) {
         if (ObjectUtils.isEmpty(currencyRepository.findByCurrencyCode(currency.getCurrencyCode()))) {
-        return currencyRepository.save(currency);
+            return currencyRepository.save(currency);
         } else {
-            throw new BaseException(409, "Currency has existed!");
+            throw new AppException(ErrorCode.DUPLICATED_CURRENCY);
         }
     }
 
@@ -43,7 +44,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         if (!ObjectUtils.isEmpty(currencyRepository.findByCurrencyCode(currency.getCurrencyCode()))) {
             return currencyRepository.save(currency);
         } else {
-            throw new BaseException(404, "Currency has not existed!");
+            throw new AppException(ErrorCode.CURRENCY_NOT_FOUND);
         }
     }
 

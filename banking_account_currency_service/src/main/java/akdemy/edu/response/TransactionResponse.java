@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @NoArgsConstructor
 @AllArgsConstructor
 @ResponseBody
-public class ApiResponse {
+public class TransactionResponse {
 
     private int code;
 

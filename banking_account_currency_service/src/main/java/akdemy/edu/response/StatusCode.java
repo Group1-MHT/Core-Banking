@@ -1,18 +1,20 @@
 package akdemy.edu.response;
 
 
+import io.netty.handler.codec.http.HttpStatusClass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
 public enum StatusCode {
 
-    WITH_DRAW_SUCCESS(200,"WITH DRAW SUCCESS"),
+    WITHDRAW_SUCCESS(200, "WITHDRAW SUCCESS"),
 
-    DEPOSIT_SUCCESS(200,"DEPOSIT SUCCESS"),
+    DEPOSIT_SUCCESS(200, "DEPOSIT SUCCESS"),
 
-    TRANFER_SUCCESS(200,"TRANFER SUCCESS");
+    TRANSFER_SUCCESS(200, "TRANSFER SUCCESS");
 
     private final int code;
 

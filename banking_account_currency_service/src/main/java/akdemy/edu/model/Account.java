@@ -1,13 +1,9 @@
 package akdemy.edu.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "accounts")
+@Builder
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,30 +25,8 @@ public class Account {
     @Column(name = "account_type", nullable = false)
     private String accountType;
 
-    @Column(name = "balance", nullable = false)
-    private BigDecimal balance;
-
-    @ManyToOne
-    @JoinColumn(name = "currency_code", nullable = false)
-    private Currency currency;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    public Account(Long userId, String accountType, BigDecimal balance, Currency currency) {
-        this.userId = userId;
-        this.accountType = accountType;
-        this.balance = balance;
-        this.currency = currency;
-    }
-
-    public Account(Long accountId, Long userId, String accountType, BigDecimal balance, Currency currency) {
-        this.accountId = accountId;
-        this.userId = userId;
-        this.accountType = accountType;
-        this.balance = balance;
-        this.currency = currency;
-    }
 }
 
