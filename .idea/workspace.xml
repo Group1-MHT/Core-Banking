@@ -5,57 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cf9e89fc-3163-4704-8021-4565f143b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/config/TransactionKafkaConsumerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/config/TransactionResponseKafkaProducerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/model/TransactionStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_impl/SyncService/AccountConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_impl/SyncService/BalanceLogProducer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/service/SyncService/AskBalanceProducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/BankingAccountCurrencyServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/BankingAccountCurrencyServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/config/KafkaProducerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/config/WebClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/config/WebClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/controller/BalanceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/controller/BalanceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/controller/CurrencyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/controller/CurrencyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/dto/AccountDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/dto/AccountDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/dto/CurrencyDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/dto/CurrencyDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/dto/RoleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/dto/RoleDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/dto/TransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/dto/TransactionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/dto/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/exception/AppException.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/exception/AppException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/exception/TransactionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/exception/TransactionException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/exception/TransactionExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/exception/TransactionExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/model/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/model/AccountType.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/model/AccountType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/model/Balance.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/model/Balance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/model/Currency.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/model/Currency.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/model/TransactionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/model/TransactionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/repository/AccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/repository/AccountRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/repository/BalanceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/repository/BalanceRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/repository/CurrencyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/repository/CurrencyRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/response/StatusCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/response/StatusCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/response/TransactionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/response/TransactionResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_i/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_i/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_i/BalanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_i/BalanceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_i/CurrencyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_i/CurrencyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_impl/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_impl/AccountServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_impl/BalanceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_impl/BalanceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_impl/CurrencyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/service_impl/CurrencyServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_impl/SyncService/AccountConsumer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/service_impl/SyncService/AccountProducer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/akdemy/edu/share/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/share/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/test/java/akdemy/edu/BankingAccountCurrencyServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/test/java/com/example/banking_transaction_service/BankingAccountCurrencyServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_transaction_service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/config/CustomeRegisterBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/config/CustomeRegisterBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/response/StatusCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_account_currency_service/src/main/java/com/example/banking_transaction_service/response/StatusCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/repository/TransactionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/repository/TransactionRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/service/impl/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/src/main/java/com/example/banking_transaction_service/service/impl/TransactionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/banking_transaction_service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/banking_transaction_service/src/test/java/com/example/banking_transaction_service/BankingTransactionServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/banking_transaction_service/src/test/java/com/example/banking_account_currency_service/BankingTransactionServiceApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,8 +64,8 @@
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
-  <component name="RunManager" selected="Spring Boot.BankingAccountCurrencyServiceApplication">
-    <configuration name="BankingAccountCurrencyServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true">
+  <component name="RunManager" selected="Spring Boot.BankingTransactionServiceApplication">
+    <configuration name="BankingAccountCurrencyServiceApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="banking_account_currency_service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.banking_transaction_service.BankingAccountCurrencyServiceApplication" />
       <extension name="coverage">
@@ -145,10 +99,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BankingTransactionServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="BankingTransactionServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="banking_transaction_service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.banking_transaction_service.BankingTransactionServiceApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.banking_transaction_service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -157,12 +117,13 @@
       <item itemvalue="Spring Boot.BankingEurekaServerApplication" />
       <item itemvalue="Spring Boot.BankingGatewayApplication" />
       <item itemvalue="Spring Boot.BankingManagerUserApplication" />
+      <item itemvalue="Spring Boot.BankingAccountCurrencyServiceApplication (1)" />
       <item itemvalue="Spring Boot.BankingTransactionServiceApplication" />
-      <item itemvalue="Spring Boot.BankingAccountCurrencyServiceApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.BankingAccountCurrencyServiceApplication" />
+        <item itemvalue="Spring Boot.BankingTransactionServiceApplication" />
+        <item itemvalue="Spring Boot.BankingAccountCurrencyServiceApplication (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -192,7 +153,8 @@
       <workItem from="1710036246293" duration="5919000" />
       <workItem from="1710055635548" duration="18020000" />
       <workItem from="1710118416901" duration="21890000" />
-      <workItem from="1710174365844" duration="4705000" />
+      <workItem from="1710174365844" duration="5171000" />
+      <workItem from="1710179587315" duration="607000" />
     </task>
     <servers />
   </component>
