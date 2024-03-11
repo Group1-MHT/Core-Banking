@@ -1,16 +1,16 @@
 package com.example.banking_transaction_service.service;
 
 
-import com.example.banking_transaction_service.dto.TransactionDto;
+import com.example.banking_transaction_service.dto.TransactionDTO;
 
 public interface ITransactionService {
 
-    TransactionDto tranfer(TransactionDto transactionDto);
+    TransactionDTO transfer(TransactionDTO transactionDto);
 
-    TransactionDto deposit(TransactionDto transactionDto);
+    TransactionDTO deposit(TransactionDTO transactionDto);
 
-    TransactionDto withdraw(TransactionDto transactionDto);
+    TransactionDTO withdraw(TransactionDTO transactionDto);
 
 
-    TransactionDto initTransaction(TransactionDto transactionDto);
+    TransactionDTO initTransaction(TransactionDTO transactionDto);
 }

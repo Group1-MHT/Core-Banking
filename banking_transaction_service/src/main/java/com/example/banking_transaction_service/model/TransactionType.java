@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TransactionType {
-    TRANFER(1),
+    TRANSFER(1),
 
     DEPOSIT(2),
 

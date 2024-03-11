@@ -1,9 +1,7 @@
 package com.example.banking_transaction_service.service.impl;
 
 
-import com.example.banking_transaction_service.dto.TransactionDto;
-import com.example.banking_transaction_service.exception.AppException;
-import com.example.banking_transaction_service.exception.ErrorCode;
+import com.example.banking_transaction_service.dto.TransactionDTO;
 import com.example.banking_transaction_service.model.Transaction;
 import com.example.banking_transaction_service.model.TransactionStatus;
 import com.example.banking_transaction_service.repository.TransactionRepository;
@@ -18,9 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.sql.Connection;
 
 @Service
 public class TransactionService implements ITransactionService {
@@ -31,11 +27,11 @@ public class TransactionService implements ITransactionService {
 
     private final TransactionRepository transactionRepository;
 
-    private final IConverterDto<Transaction,TransactionDto> transactionConverter;
+    private final IConverterDto<Transaction, TransactionDTO> transactionConverter;
 
     public TransactionService(BalanceClient balanceClient,
                               TransactionRepository transactionRepository,
-                              @Qualifier("transactionMapper")IConverterDto<Transaction,TransactionDto> transactionConverter){
+                              @Qualifier("transactionMapper")IConverterDto<Transaction, TransactionDTO> transactionConverter){
         this.transactionRepository = transactionRepository;
         this.transactionConverter = transactionConverter;
         this.balanceClient = balanceClient;
@@ -56,7 +52,7 @@ public class TransactionService implements ITransactionService {
 
     @Transactional
     @Override
-    public TransactionDto tranfer(TransactionDto transactionDto){
+    public TransactionDTO transfer(TransactionDTO transactionDto){
         try {
             ApiResponse response = this.balanceClient.tranferBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
@@ -77,7 +73,7 @@ public class TransactionService implements ITransactionService {
 
     @Transactional
     @Override
-    public TransactionDto withdraw(TransactionDto transactionDto){
+    public TransactionDTO withdraw(TransactionDTO transactionDto){
         try {
             ApiResponse response = this.balanceClient.withdrawBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
@@ -98,7 +94,7 @@ public class TransactionService implements ITransactionService {
 
     @Transactional
     @Override
-    public TransactionDto deposit(TransactionDto transactionDto){
+    public TransactionDTO deposit(TransactionDTO transactionDto){
         try {
             ApiResponse response = this.balanceClient.depositBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
@@ -118,15 +114,15 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public TransactionDto initTransaction(TransactionDto transactionDto) {
+    public TransactionDTO initTransaction(TransactionDTO transactionDto) {
         Transaction transaction = transactionConverter.convertToEntity(transactionDto);
         transaction.setTransactionStatus(TransactionStatus.IN_PROCESS);
         transaction = transactionRepository.save(transaction);
-        TransactionDto transactionSended = transactionConverter.convertToDto(transaction);
+        TransactionDTO transactionSended = transactionConverter.convertToDto(transaction);
         return transactionSended;
     }
 
-    private TransactionDto handlerResponse(TransactionDto transactionDto, ApiResponse response){
+    private TransactionDTO handlerResponse(TransactionDTO transactionDto, ApiResponse response){
         transactionDto.setMessage(response.getMessage());
         if (response.getCode() == 200){
             transactionDto.setTransactionStatus(TransactionStatus.SUCCESS);
