@@ -29,7 +29,7 @@
 //
 //                }
 //            });
-//        } catch (Exception e){
+//        } catch (exception e){
 //            logger.error("ERROR : "+ e.getMessage());
 //        }
 //    }

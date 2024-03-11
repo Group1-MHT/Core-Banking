@@ -4,6 +4,7 @@ package akdemy.edu.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
@@ -11,12 +12,11 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "account_balance")
+@Table(name = "balances")
 @Builder
 public class Balance {
-
     @Id
-    @Column(name = "account_id",nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private Long accountId;
 
     @Column(name = "balance", nullable = false)

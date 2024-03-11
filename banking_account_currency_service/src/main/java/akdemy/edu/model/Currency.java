@@ -1,12 +1,11 @@
 package akdemy.edu.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
+import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @NoArgsConstructor
@@ -14,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "currencies")
+@Builder
 public class Currency {
     @Id
     @Column(name = "currency_code", nullable = false)

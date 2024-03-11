@@ -1,4 +1,4 @@
-package akdemy.edu.dto;
+package akdemy.edu.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
