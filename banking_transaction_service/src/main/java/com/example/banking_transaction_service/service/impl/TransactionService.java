@@ -11,13 +11,21 @@ import com.example.banking_transaction_service.response.ApiResponse;
 import com.example.banking_transaction_service.service.BalanceClient;
 import com.example.banking_transaction_service.service.ITransactionService;
 import com.example.banking_transaction_service.service.mapper.IConverterDto;
+import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.sql.Connection;
+
 @Service
 public class TransactionService implements ITransactionService {
 
+    private static Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     private BalanceClient balanceClient;
 
@@ -52,11 +60,19 @@ public class TransactionService implements ITransactionService {
         try {
             ApiResponse response = this.balanceClient.tranferBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
+        } catch (FeignException e){
+            logger.error(e.getCause().toString());
+            if (e.getCause() instanceof SocketTimeoutException){
+//                handle timeout;
+            }
+            else {
+                transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
         } catch (Exception e){
-            throw new AppException(ErrorCode.TRANSACTION_FAIL, transactionDto.getId());
+            transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+        } finally {
+            Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
+            return transactionDto;
         }
-        Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
-        return transactionDto;
     }
 
     @Transactional
@@ -65,11 +81,19 @@ public class TransactionService implements ITransactionService {
         try {
             ApiResponse response = this.balanceClient.withdrawBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
+        } catch (FeignException e){
+            logger.error(e.getCause().toString());
+            if (e.getCause() instanceof SocketTimeoutException){
+//                handle timeout;
+            }
+            else {
+                transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
         } catch (Exception e){
-            throw new AppException(ErrorCode.TRANSACTION_FAIL, transactionDto.getId());
+            transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+        } finally {
+            Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
+            return transactionDto;
         }
-        Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
-        return transactionDto;
     }
 
     @Transactional
@@ -78,11 +102,19 @@ public class TransactionService implements ITransactionService {
         try {
             ApiResponse response = this.balanceClient.depositBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
+        } catch (FeignException e){
+            logger.error(e.getCause().toString());
+            if (e.getCause() instanceof SocketTimeoutException){
+//                handle timeout;
+            }
+            else {
+                transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
         } catch (Exception e){
-            throw new AppException(ErrorCode.TRANSACTION_FAIL, transactionDto.getId());
+            transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+        } finally {
+            Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
+            return transactionDto;
         }
-        Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
-        return transactionDto;
     }
 
     @Override

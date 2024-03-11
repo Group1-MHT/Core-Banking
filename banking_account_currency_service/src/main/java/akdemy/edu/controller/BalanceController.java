@@ -46,8 +46,9 @@ public class BalanceController {
     }
 
     @PostMapping("/tranfer")
-    public ResponseEntity<ApiResponse> tranferBalance(@RequestBody TransactionDto transaction){
+    public ResponseEntity<ApiResponse> tranferBalance(@RequestBody TransactionDto transaction) throws InterruptedException {
         balanceService.tranfer(transaction.getId(),transaction.getSourceAccountId(), transaction.getDestinationAccountId(), transaction.getAmount());
+        Thread.sleep(100000);
         return ResponseEntity.ok().body(
                 new ApiResponse(StatusCode.TRANFER_SUCCESS.getCode(),
                         StatusCode.TRANFER_SUCCESS.getMessage(),
