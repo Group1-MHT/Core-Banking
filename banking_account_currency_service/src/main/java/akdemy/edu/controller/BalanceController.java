@@ -23,38 +23,38 @@ public class BalanceController {
 
 
     @GetMapping("")
-    public Mono<ResponseEntity<Balance>> getBalance(@RequestBody Account account) {
-        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(balanceService.getBalance(account.getAccountId())));
+    public ResponseEntity<Balance> getBalance(@RequestBody Account account) {
+        return ResponseEntity.status(HttpStatus.OK).body(balanceService.getBalance(account.getAccountId()));
     }
 
     @PostMapping("/deposit")
-    public Mono<ResponseEntity<TransactionResponse>> depositBalance(@RequestBody TransactionDTO transaction) {
+    public ResponseEntity<TransactionResponse> depositBalance(@RequestBody TransactionDTO transaction) {
         balanceService.deposit(transaction.getId(), transaction.getDestinationAccountId(), transaction.getAmount());
-        return Mono.just(ResponseEntity.status(HttpStatus.valueOf(StatusCode.DEPOSIT_SUCCESS.getCode())).body(
+        return ResponseEntity.status(HttpStatus.valueOf(StatusCode.DEPOSIT_SUCCESS.getCode())).body(
                 new TransactionResponse(StatusCode.DEPOSIT_SUCCESS.getCode(),
                         StatusCode.DEPOSIT_SUCCESS.getMessage(),
-                        transaction.getId()))
+                        transaction.getId())
         );
     }
 
     @PostMapping("/withdraw")
-    public Mono<ResponseEntity<TransactionResponse>> withdrawBalance(@RequestBody TransactionDTO transaction) {
+    public ResponseEntity<TransactionResponse> withdrawBalance(@RequestBody TransactionDTO transaction) {
         balanceService.withdraw(transaction.getId(), transaction.getSourceAccountId(), transaction.getAmount());
-        return Mono.just(ResponseEntity.status(HttpStatus.valueOf(StatusCode.WITHDRAW_SUCCESS.getCode())).body(
+        return ResponseEntity.status(HttpStatus.valueOf(StatusCode.WITHDRAW_SUCCESS.getCode())).body(
                 new TransactionResponse(StatusCode.WITHDRAW_SUCCESS.getCode(),
                         StatusCode.WITHDRAW_SUCCESS.getMessage(),
                         transaction.getId())
-        ));
+        );
     }
 
     @PostMapping("/transfer")
-    public Mono<ResponseEntity<TransactionResponse>> transferBalance(@RequestBody TransactionDTO transaction) {
+    public ResponseEntity<TransactionResponse> transferBalance(@RequestBody TransactionDTO transaction) {
         balanceService.transfer(transaction.getId(), transaction.getSourceAccountId(), transaction.getDestinationAccountId(), transaction.getAmount());
-        return Mono.just(ResponseEntity.status(HttpStatus.valueOf(StatusCode.TRANSFER_SUCCESS.getCode())).body(
+        return ResponseEntity.status(HttpStatus.valueOf(StatusCode.TRANSFER_SUCCESS.getCode())).body(
                 new TransactionResponse(StatusCode.TRANSFER_SUCCESS.getCode(),
                         StatusCode.TRANSFER_SUCCESS.getMessage(),
                         transaction.getId())
-        ));
+        );
     }
 
 

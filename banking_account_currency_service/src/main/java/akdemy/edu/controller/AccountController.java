@@ -34,7 +34,7 @@ public class AccountController {
 //    private WebClient.Builder webClientBuilder;
 
     @PostMapping
-    public Mono<ResponseEntity<?>> createAccount(@RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<?> createAccount(@RequestBody AccountDTO accountDTO) {
 //        return webClientBuilder.build()
 //                .get()
 //                .uri("http://gateway-service:8000/user-service/users/{userId}", account.getUserId())
@@ -50,9 +50,9 @@ public class AccountController {
                     .accountType(accountDTO.getAccountType()).build());
             Balance balance = Balance.builder().accountId(newAccount.getAccountId()).balance(accountDTO.getBalance()).currency(currency).build();
             balanceService.createBalance(balance);
-            return Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully!"));
+            return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully!");
         } else {
-            return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown currency!"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown currency!");
         }
 //                    } else {
 //                        return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
@@ -66,7 +66,7 @@ public class AccountController {
     }
 
     @PutMapping("/{accountId}")
-    public Mono<ResponseEntity<?>> updateAccount(@PathVariable("accountId") Long accountId, @RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<?> updateAccount(@PathVariable("accountId") Long accountId, @RequestBody AccountDTO accountDTO) {
 //        return webClientBuilder.build()
 //                .get()
 //                .uri("http://gateway-service:8000/user-service/users/{userId}", accountDTO.getUserId())
@@ -87,9 +87,9 @@ public class AccountController {
             } else {
                 balanceService.withdraw(null, accountId, accountDTO.getBalance());
             }
-            return Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("Account updated successfully!"));
+            return ResponseEntity.status(HttpStatus.CREATED).body("Account updated successfully!");
         } else {
-            return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown currency!"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown currency!");
         }
 //                    } else {
 //                        return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
@@ -98,7 +98,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{accountId}")
-    public Mono<ResponseEntity<Void>> deleteAccount(@PathVariable Long accountId) {
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long accountId) {
 //        return webClientBuilder.build()
 //                .get()
 //                .uri("http://gateway-service:8000/user-service/users/{userId}", accountService.getAccountById(accountId).getUserId())
@@ -109,7 +109,7 @@ public class AccountController {
 //                    if (userResponse != null) {
         balanceService.deleteBalance(accountId);
         accountService.deleteAccount(accountId);
-        return Mono.just(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 //                    } else {
 //                        return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
 //                    }
@@ -117,9 +117,7 @@ public class AccountController {
     }
 
     @GetMapping
-    public Mono<ResponseEntity<List<Account>>> getAllAccounts() {
-        return Flux.fromStream(accountService.getAllAccounts().stream())
-                .collectList()
-                .map(ResponseEntity::ok);
+    public ResponseEntity<List<Account>> getAllAccounts() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 }

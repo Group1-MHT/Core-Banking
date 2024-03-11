@@ -19,32 +19,30 @@ public class CurrencyController {
     private CurrencyService currencyService;
 
     @PostMapping
-    public Mono<ResponseEntity<?>> createCurrency(@RequestBody Currency currency) {
+    public ResponseEntity<?> createCurrency(@RequestBody Currency currency) {
         Currency newCurrency = currencyService.createCurrency(currency);
-        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(newCurrency));
+        return ResponseEntity.status(HttpStatus.OK).body(newCurrency);
     }
 
     @PutMapping("/{currencyCode}")
-    public Mono<ResponseEntity<?>> updateCurrency(@PathVariable String currencyCode, @RequestBody CurrencyDTO currencyDTO) {
+    public ResponseEntity<?> updateCurrency(@PathVariable String currencyCode, @RequestBody CurrencyDTO currencyDTO) {
         Currency currency = new Currency(currencyCode, currencyDTO.getName(), currencyDTO.getSymbol());
-        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(currencyService.updateCurrency(currency)));
+        return ResponseEntity.status(HttpStatus.OK).body(currencyService.updateCurrency(currency));
     }
 
     @DeleteMapping("/{currencyCode}")
-    public Mono<ResponseEntity<Void>> deleteCurrency(@PathVariable String currencyCode) {
+    public ResponseEntity<Void> deleteCurrency(@PathVariable String currencyCode) {
         currencyService.deleteCurrency(currencyCode);
-        return Mono.just(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping
-    public Mono<ResponseEntity<Flux<Currency>>> getAllCurrencies() {
-        return Flux.fromStream(currencyService.getAllCurrencies().stream())
-                .collectList()
-                .map(currencies -> ResponseEntity.ok(Flux.fromIterable(currencies)));
+    public ResponseEntity<Flux<Currency>> getAllCurrencies() {
+        return ResponseEntity.ok(Flux.fromIterable(currencyService.getAllCurrencies()));
     }
 
     @GetMapping("/{currencyCode}")
-    public Mono<ResponseEntity<Currency>> getCurrencyById(@PathVariable("currencyCode") String currencyCode) {
-        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(currencyService.getCurrencyByCode(currencyCode)));
+    public ResponseEntity<Currency> getCurrencyById(@PathVariable("currencyCode") String currencyCode) {
+        return ResponseEntity.status(HttpStatus.OK).body(currencyService.getCurrencyByCode(currencyCode));
     }
 }
