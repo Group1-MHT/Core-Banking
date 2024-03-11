@@ -12,7 +12,9 @@ import com.example.banking_transaction_service.service.mapper.IConverterDto;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,14 +29,18 @@ public class TransactionService implements ITransactionService {
 
     private final TransactionRepository transactionRepository;
 
+    private KafkaTemplate<String, TransactionDTO> askBalanceKafkaTemplate;
+
     private final IConverterDto<Transaction, TransactionDTO> transactionConverter;
 
     public TransactionService(BalanceClient balanceClient,
                               TransactionRepository transactionRepository,
-                              @Qualifier("transactionMapper")IConverterDto<Transaction, TransactionDTO> transactionConverter){
+                              @Qualifier("transactionMapper")IConverterDto<Transaction, TransactionDTO> transactionConverter,
+                              @Qualifier("transactionAskKafkaTemplate") KafkaTemplate<String, TransactionDTO> askBalanceKafkaTemplate){
         this.transactionRepository = transactionRepository;
         this.transactionConverter = transactionConverter;
         this.balanceClient = balanceClient;
+        this.askBalanceKafkaTemplate = askBalanceKafkaTemplate;
     }
 
 //    public List<TransactionDto> getAccountTransactionHistory(Long accountId) throws Exception {
@@ -57,9 +63,8 @@ public class TransactionService implements ITransactionService {
             ApiResponse response = this.balanceClient.tranferBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
-            logger.error(e.getCause().toString());
             if (e.getCause() instanceof SocketTimeoutException){
-//                handle timeout;
+                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
                 transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
@@ -78,9 +83,8 @@ public class TransactionService implements ITransactionService {
             ApiResponse response = this.balanceClient.withdrawBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
-            logger.error(e.getCause().toString());
             if (e.getCause() instanceof SocketTimeoutException){
-//                handle timeout;
+                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
                 transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
@@ -99,9 +103,8 @@ public class TransactionService implements ITransactionService {
             ApiResponse response = this.balanceClient.depositBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
-            logger.error(e.getCause().toString());
             if (e.getCause() instanceof SocketTimeoutException){
-//                handle timeout;
+                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
                 transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
