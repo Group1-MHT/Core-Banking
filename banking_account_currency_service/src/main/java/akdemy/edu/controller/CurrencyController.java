@@ -1,9 +1,9 @@
 package akdemy.edu.controller;
 
 import akdemy.edu.dto.CurrencyDTO;
+import akdemy.edu.exception.AppException;
 import akdemy.edu.model.Currency;
 import akdemy.edu.service_i.CurrencyService;
-import akdemy.edu.share.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +20,14 @@ public class CurrencyController {
 
     @PostMapping
     public Mono<ResponseEntity<?>> createCurrency(@RequestBody Currency currency) {
-        try {
-            return Mono.just(ResponseEntity.status(HttpStatus.OK).body(currencyService.createCurrency(currency)));
-        } catch (BaseException e) {
-            return Mono.just(ResponseEntity.status(e.getStatus()).body(e.getMessage()));
-        }
+        Currency newCurrency = currencyService.createCurrency(currency);
+        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(newCurrency));
     }
 
     @PutMapping("/{currencyCode}")
     public Mono<ResponseEntity<?>> updateCurrency(@PathVariable String currencyCode, @RequestBody CurrencyDTO currencyDTO) {
         Currency currency = new Currency(currencyCode, currencyDTO.getName(), currencyDTO.getSymbol());
-        try {
-            return Mono.just(ResponseEntity.status(HttpStatus.OK).body(currencyService.updateCurrency(currency)));
-        } catch (BaseException e) {
-            return Mono.just(ResponseEntity.status(e.getStatus()).body(e.getMessage()));
-        }
+        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(currencyService.updateCurrency(currency)));
     }
 
     @DeleteMapping("/{currencyCode}")
