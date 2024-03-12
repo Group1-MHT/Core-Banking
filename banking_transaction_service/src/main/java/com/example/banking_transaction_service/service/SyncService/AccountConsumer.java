@@ -1,4 +1,4 @@
-//package com.example.banking_transaction_service.service.SyncService;
+//package com.example.banking_transaction_service.service.sync_service;
 //
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;

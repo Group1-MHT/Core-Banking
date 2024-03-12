@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/manager-roles")
+@RequestMapping("/manager-user-service/a/role")
 public class RoleController {
 
     @Autowired
     private RoleService roleService;
 
-    @PostMapping("/a/create")
+    @PostMapping("/create")
     public ResponseEntity<Role> createRole(@RequestBody RoleDto role) {
         Role createdRole = roleService.createRole(role);
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
-    @PutMapping("/a/update/{roleId}")
+    @PutMapping("/update/{roleId}")
     public ResponseEntity<Role> updateRole(@PathVariable Integer roleId, @RequestBody Role updatedRole) {
         Role updated = roleService.updateRole(roleId, updatedRole);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/a/delete/{roleId}")
+    @DeleteMapping("/delete/{roleId}")
     public ResponseEntity<String> deleteRole(@PathVariable Integer roleId) {
         roleService.deleteRole(roleId);
         return new ResponseEntity<>("Role deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/a/getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<Role>> getAllRoles() {
         List<Role> roles = roleService.getAllRoles();
         return new ResponseEntity<>(roles, HttpStatus.OK);
