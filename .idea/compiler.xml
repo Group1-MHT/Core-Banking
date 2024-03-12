@@ -23,7 +23,7 @@
       <module name="banking_account_currency_service" options="-parameters" />
       <module name="banking_eureka_server" options="-parameters" />
       <module name="banking_gateway" options="-parameters" />
-      <module name="banking_manager_user_service" options="-parameters" />
+      <module name="banking_manager_user_service" options="" />
       <module name="banking_transaction_service" options="-parameters" />
     </option>
   </component>

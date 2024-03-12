@@ -17,6 +17,6 @@ public interface BalanceClient {
     ResponseEntity<ApiResponse> depositBalance(@RequestBody TransactionDTO transaction);
 
     @PostMapping("/transfer")
-    ResponseEntity<ApiResponse> tranferBalance(@RequestBody TransactionDTO transaction);
+    ResponseEntity<ApiResponse> transferBalance(@RequestBody TransactionDTO transaction);
 
 }

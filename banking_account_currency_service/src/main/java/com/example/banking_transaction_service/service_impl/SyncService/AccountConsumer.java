@@ -17,6 +17,6 @@ public class AccountConsumer {
     @KafkaListener(topics = "ask-balance-topic",groupId = "group-account",containerFactory = "transactionKafkaListenerContainerFactory")
     public void handleCrediting(ConsumerRecord<String, TransactionDTO> record) throws JsonProcessingException {
         TransactionDTO transactionDTO = record.value();
-
+        System.out.println(transactionDTO.toString());
     }
 }
