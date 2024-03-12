@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/banking_manager_user/pom.xml" />
         <option value="$PROJECT_DIR$/banking_gateway/pom.xml" />
         <option value="$PROJECT_DIR$/banking_transaction_service/pom.xml" />
+        <option value="$PROJECT_DIR$/banking_manager_user_service/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />
