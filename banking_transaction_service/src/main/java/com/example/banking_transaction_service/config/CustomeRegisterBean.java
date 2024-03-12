@@ -11,13 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CustomeRegisterBean {
 
-
-//    @Bean
-//    public Client feignClient() {
-//        return new Client.Default(null, null);
-//    }
-
-
     @Bean
     public ModelMapper getModelMapper(){
         return new ModelMapper();
