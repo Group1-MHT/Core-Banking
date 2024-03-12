@@ -28,7 +28,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<TransactionDTO> tranferTransaction(@RequestBody TransactionDTO transactionDto){
+    public ResponseEntity<TransactionDTO> transferTransaction(@RequestBody TransactionDTO transactionDto){
         TransactionDTO tempTransaction = transactionService.initTransaction(transactionDto);
         TransactionDTO transaction = transactionService.transfer(tempTransaction);
         return ResponseEntity.ok().body(transaction);

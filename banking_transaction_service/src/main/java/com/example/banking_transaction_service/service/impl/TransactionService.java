@@ -59,7 +59,7 @@ public class TransactionService implements ITransactionService {
     @Override
     public TransactionDTO transfer(TransactionDTO transactionDto){
         try {
-            ApiResponse response = this.balanceClient.tranferBalance(transactionDto).getBody();
+            ApiResponse response = this.balanceClient.transferBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
