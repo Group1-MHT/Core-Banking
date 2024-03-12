@@ -2,6 +2,7 @@ package com.example.banking_transaction_service.dto;
 
 import com.example.banking_transaction_service.model.TransactionStatus;
 import com.example.banking_transaction_service.model.TransactionType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class TransactionDTO {
 
     private Long id;
