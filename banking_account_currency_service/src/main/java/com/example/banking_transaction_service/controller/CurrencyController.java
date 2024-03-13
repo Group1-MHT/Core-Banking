@@ -35,7 +35,7 @@ public class CurrencyController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/a/currencies/")
+    @GetMapping("/a/currencies")
     public ResponseEntity<?> getAllCurrencies() {
         return ResponseEntity.ok(currencyService.getAllCurrencies());
     }

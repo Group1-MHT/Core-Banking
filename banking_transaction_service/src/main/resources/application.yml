@@ -2,10 +2,10 @@ server:
   port: 9003
 
 spring:
-#  kafka:
-#    consumer:
-#      bootstrap-servers: localhost:9092
-#      group-id: group-account
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group-account
   application:
     name: banking_transaction_service
   datasource:

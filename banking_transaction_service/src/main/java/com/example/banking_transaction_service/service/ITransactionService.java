@@ -11,6 +11,5 @@ public interface ITransactionService {
 
     TransactionDTO withdraw(TransactionDTO transactionDto);
 
-
     TransactionDTO initTransaction(TransactionDTO transactionDto);
 }
