@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping( "/manager-user")
+@RequestMapping( "user-service/user")
 public class UserController {
 
     @Autowired
