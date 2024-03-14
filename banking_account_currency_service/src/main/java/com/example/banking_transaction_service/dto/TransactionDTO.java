@@ -4,6 +4,7 @@ import com.example.banking_transaction_service.model.TransactionStatus;
 import com.example.banking_transaction_service.model.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.EnumType;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class TransactionDTO {
 

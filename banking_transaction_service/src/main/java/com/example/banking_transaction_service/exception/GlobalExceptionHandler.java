@@ -1,6 +1,6 @@
 package com.example.banking_transaction_service.exception;
 
-import com.example.banking_transaction_service.response.ApiResponse;
+import com.example.banking_transaction_service.response.TransactionResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<ApiResponse> handleAppException(AppException exception) {
-        ApiResponse apiResponse = new ApiResponse();
+    public ResponseEntity<TransactionResponse> handleAppException(AppException exception) {
+        TransactionResponse apiResponse = new TransactionResponse();
 
         apiResponse.setCode(exception.getErrorCode().getCode());
         apiResponse.setMessage(exception.getMessage());
