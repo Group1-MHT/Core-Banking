@@ -9,6 +9,9 @@ public enum ErrorCode {
 
     NO_TRANSACTION_HISTORY(001,"You dont have transaction history"),
 
+    TRANSACTION_NOT_FOUND(002,"Transaction has not found"),
+
+
     ACCOUNT_NOT_FOUND(1001, "Account has not found."),
 
     NOT_ENOUGH_MONEY_IN_ACCOUNT(1002, "There is not enough money in account."),
