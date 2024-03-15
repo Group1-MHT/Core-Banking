@@ -4,7 +4,6 @@ import com.example.banking_transaction_service.dto.TransactionDTO;
 import com.example.banking_transaction_service.response.TransactionResponse;
 import com.example.banking_transaction_service.service.repository.BalanceRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.extern.java.Log;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
