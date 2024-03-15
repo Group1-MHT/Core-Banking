@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "balance", url = "http://localhost:9000/account-currency-service/asu/balance")
+@FeignClient(value = "balance", url = "http://localhost:9002/account-currency-service/")
 public interface BalanceClient {
 
-    @PostMapping("/withdraw")
+    @PostMapping("/su/withdraw")
     ResponseEntity<TransactionResponse> withdrawBalance(@RequestBody TransactionDTO transaction);
-    @PostMapping("/deposit")
+    @PostMapping("/su/deposit")
     ResponseEntity<TransactionResponse> depositBalance(@RequestBody TransactionDTO transaction);
 
-    @PostMapping("/transfer")
+    @PostMapping("/su/transfer")
     ResponseEntity<TransactionResponse> transferBalance(@RequestBody TransactionDTO transaction);
 
 }

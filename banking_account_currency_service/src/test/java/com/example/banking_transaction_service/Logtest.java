@@ -1,7 +1,7 @@
 package com.example.banking_transaction_service;
 
-import com.example.banking_transaction_service.repository.BalanceRepository;
 import com.example.banking_transaction_service.response.TransactionResponse;
+import com.example.banking_transaction_service.service.repository.BalanceRepository;
 import com.example.banking_transaction_service.service_impl.SyncService.BinLogService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
