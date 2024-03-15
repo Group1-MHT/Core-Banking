@@ -1,23 +1,23 @@
 package com.example.banking_transaction_service.controller;
 
 import com.example.banking_transaction_service.dto.AccountDTO;
+import com.example.banking_transaction_service.exception.exception.AppException;
+import com.example.banking_transaction_service.exception.ErrorCode;
 import com.example.banking_transaction_service.model.Account;
 import com.example.banking_transaction_service.model.Balance;
 import com.example.banking_transaction_service.model.Currency;
-import com.example.banking_transaction_service.service_i.AccountService;
-import com.example.banking_transaction_service.service_i.BalanceService;
-import com.example.banking_transaction_service.service_i.CurrencyService;
+import com.example.banking_transaction_service.service.client.UserClient;
+import com.example.banking_transaction_service.service.service_i.AccountService;
+import com.example.banking_transaction_service.service.service_i.BalanceService;
+import com.example.banking_transaction_service.service.service_i.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @RestController
-@RequestMapping("/account-currency-service/accounts")
+@RequestMapping("/account-currency-service")
 public class AccountController {
 
     @Autowired
@@ -29,94 +29,81 @@ public class AccountController {
     @Autowired
     private BalanceService balanceService;
 
-//    @Autowired
-//    private WebClient.Builder webClientBuilder;
+    @Autowired
+    private UserClient userClient;
 
-    @PostMapping
+    @PostMapping("/asu/account")
     public ResponseEntity<?> createAccount(@RequestBody AccountDTO accountDTO) {
-//        return webClientBuilder.build()
-//                .get()
-//                .uri("http://gateway-service:8000/user-service/users/{userId}", account.getUserId())
-//                .retrieve()
-//                .bodyToMono(UserDTO.class)
-//                .flatMap(userResponse -> {
-//                    // TODO: fix condition
-//                    if (userResponse != null) {
-        Currency currency = currencyService.getCurrencyByCode(accountDTO.getCurrencyCode());
-        if (!ObjectUtils.isEmpty(currency)) {
-            Account newAccount = accountService.createAccount(Account.builder()
-                    .userId(accountDTO.getUserId())
-                    .accountType(accountDTO.getAccountType()).build());
-            Balance balance = Balance.builder().accountId(newAccount.getAccountId()).balance(accountDTO.getBalance()).currency(currency).build();
-            balanceService.createBalance(balance);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully!");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown currency!");
-        }
-//                    } else {
-//                        return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
-//                    }
-//                });
-    }
-
-    @GetMapping("/{accountId}")
-    public Mono<ResponseEntity<Account>> getAccountById(@PathVariable("accountId") Long accountId) {
-        return Mono.just(ResponseEntity.status(HttpStatus.OK).body(accountService.getAccountById(accountId)));
-    }
-
-    @PutMapping("/{accountId}")
-    public ResponseEntity<?> updateAccount(@PathVariable("accountId") Long accountId, @RequestBody AccountDTO accountDTO) {
-//        return webClientBuilder.build()
-//                .get()
-//                .uri("http://gateway-service:8000/user-service/users/{userId}", accountDTO.getUserId())
-//                .retrieve()
-//                .bodyToMono(UserDTO.class)
-//                .flatMap(userResponse -> {
-//                    // TODO: fix condition
-//                    if (userResponse != null) {
-        Currency currency = currencyService.getCurrencyByCode(accountDTO.getCurrencyCode());
-        if (!ObjectUtils.isEmpty(currency)) {
-            accountService.updateAccount(Account.builder()
-                    .accountId(accountId)
-                    .userId(accountDTO.getUserId())
-                    .accountType(accountDTO.getAccountType()).build());
-            Balance balance = balanceService.getBalance(accountId);
-            if (balance.getBalance().compareTo(accountDTO.getBalance()) < 0) {
-                balanceService.deposit(null, accountId, accountDTO.getBalance());
+        if (!ObjectUtils.isEmpty(userClient.getById(Math.toIntExact(accountDTO.getUserId())).getBody())) {
+            Currency currency = currencyService.getCurrencyByCode(accountDTO.getCurrencyCode());
+            if (!ObjectUtils.isEmpty(currency)) {
+                Account newAccount = accountService.createAccount(Account.builder()
+                        .userId(accountDTO.getUserId())
+                        .accountType(accountDTO.getAccountType().name())
+                        .build());
+                Balance balance = Balance.builder()
+                        .accountId(newAccount.getAccountId())
+                        .balance(accountDTO.getBalance())
+                        .currency(currency)
+                        .build();
+                balanceService.createBalance(balance);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully!");
             } else {
-                balanceService.withdraw(null, accountId, accountDTO.getBalance());
+                throw new AppException(ErrorCode.CURRENCY_NOT_FOUND);
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body("Account updated successfully!");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unknown currency!");
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
-//                    } else {
-//                        return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
-//                    }
-//                });
     }
 
-    @DeleteMapping("/{accountId}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long accountId) {
-//        return webClientBuilder.build()
-//                .get()
-//                .uri("http://gateway-service:8000/user-service/users/{userId}", accountService.getAccountById(accountId).getUserId())
-//                .retrieve()
-//                .bodyToMono(UserDTO.class)
-//                .flatMap(userResponse -> {
-//                    // TODO: fix condition
-//                    if (userResponse != null) {
+    @GetMapping("/asu/account/{accountId}")
+    public ResponseEntity<?> getAccountById(@PathVariable("accountId") Long accountId) {
+        return ResponseEntity.ok(accountService.getAccountById(accountId));
+    }
+
+    @GetMapping("/asu/account/user/{userId}")
+    public ResponseEntity<?> getAllAccountsByUserId(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(accountService.getAccountsByUserId(userId));
+    }
+
+    @PutMapping("/as/account/{accountId}")
+    public ResponseEntity<?> updateAccount(@PathVariable("accountId") Long accountId, @RequestBody AccountDTO
+            accountDTO) {
+        if (!ObjectUtils.isEmpty(userClient.getById(Math.toIntExact(accountDTO.getUserId())).getBody())) {
+            if (!ObjectUtils.isEmpty(accountService.getAccountById(accountId))) {
+                if (!ObjectUtils.isEmpty(currencyService.getCurrencyByCode(accountDTO.getCurrencyCode()))) {
+                    accountService.updateAccount(Account.builder()
+                            .accountId(accountId)
+                            .userId(accountDTO.getUserId())
+                            .accountType(accountDTO.getAccountType().name())
+                            .build());
+                    Balance balance = balanceService.getBalance(accountId);
+                    if (balance.getBalance().compareTo(accountDTO.getBalance()) < 0) {
+                        balanceService.deposit(null, accountId, accountDTO.getBalance());
+                    } else {
+                        balanceService.withdraw(null, accountId, accountDTO.getBalance());
+                    }
+                    return ResponseEntity.ok("Account updated successfully!");
+                } else {
+                    throw new AppException(ErrorCode.CURRENCY_NOT_FOUND);
+                }
+            } else {
+                throw new AppException(ErrorCode.ACCOUNT_NOT_FOUND);
+            }
+        } else {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/as/account/{accountId}")
+    public ResponseEntity<?> deleteAccount(@PathVariable Long accountId) {
         balanceService.deleteBalance(accountId);
         accountService.deleteAccount(accountId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//                    } else {
-//                        return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
-//                    }
-//                });
     }
 
-    @GetMapping
-    public ResponseEntity<List<Account>> getAllAccounts() {
+    @GetMapping("/as/accounts")
+    public ResponseEntity<?> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 }

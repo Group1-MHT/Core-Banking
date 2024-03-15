@@ -1,7 +1,7 @@
 package com.example.banking_transaction_service.dto;
 
-import com.example.banking_transaction_service.model.TransactionStatus;
-import com.example.banking_transaction_service.model.TransactionType;
+import com.example.banking_transaction_service.dto.constant.TransactionStatus;
+import com.example.banking_transaction_service.dto.constant.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

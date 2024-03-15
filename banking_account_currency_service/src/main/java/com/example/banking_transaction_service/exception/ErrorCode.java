@@ -13,7 +13,9 @@ public enum ErrorCode {
 
     CURRENCY_NOT_FOUND(404, "Currency has not existed!"),
 
-    DUPLICATED_CURRENCY(409, "Currency has existed!");
+    DUPLICATED_CURRENCY(409, "Currency has existed!"),
+
+    USER_NOT_FOUND(404, "User not found!");
 
     private final int code;
 
