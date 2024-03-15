@@ -1,8 +1,8 @@
 package com.example.banking_transaction_service.service.service_impl.sync_service;
 
 import com.example.banking_transaction_service.dto.TransactionDTO;
-import com.example.banking_transaction_service.repository.BalanceRepository;
 import com.example.banking_transaction_service.response.TransactionResponse;
+import com.example.banking_transaction_service.service.repository.BalanceRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.java.Log;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -18,7 +18,7 @@ public class AccountConsumer {
 
     private final BalanceRepository balanceRepository;
 
-    private final BinLogService binLogService;
+    private final com.example.banking_transaction_service.service_impl.SyncService.BinLogService binLogService;
 
     private KafkaTemplate<String, TransactionResponse> transactionResponseKafkaTemplate;
 
@@ -26,7 +26,7 @@ public class AccountConsumer {
     private final Logger logger = LoggerFactory.getLogger(AccountConsumer.class);
 
     public AccountConsumer(BalanceRepository balanceRepository,
-                           BinLogService binLogService,
+                           com.example.banking_transaction_service.service_impl.SyncService.BinLogService binLogService,
                            @Qualifier("transactionResponseKafkaTemplate") KafkaTemplate<String, TransactionResponse> transactionResponseKafkaTemplate) {
         this.balanceRepository = balanceRepository;
         this.binLogService = binLogService;

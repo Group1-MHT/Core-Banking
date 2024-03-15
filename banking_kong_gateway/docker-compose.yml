@@ -30,7 +30,7 @@ services:
     image: kong/kong-gateway:3.6.1.1
     depends_on:
       - kong-database
-    # command: ["kong", "migrations", "bootstrap"]
+#    command: ["kong", "migrations", "bootstrap"]
     environment:
       KONG_DATABASE: postgres
       KONG_PG_HOST: kong-database

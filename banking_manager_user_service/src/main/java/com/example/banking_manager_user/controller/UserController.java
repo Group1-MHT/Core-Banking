@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/asu/user/create")
+    @PostMapping("/as/user/create")
     public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
 
         List<String> roleNames = userDto.getRoles();
@@ -26,7 +26,7 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/as/user/update/{userId}")
+    @PutMapping("/asu/user/update/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody User updatedUser) {
         User updated = userService.updateUser(userId, updatedUser);
         return new ResponseEntity<>(updated, HttpStatus.OK);
