@@ -79,7 +79,7 @@ public class TransactionService implements ITransactionService {
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
-                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
+//                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
                 transactionDto.setTransactionStatus(TransactionStatus.FAIL);
@@ -101,7 +101,7 @@ public class TransactionService implements ITransactionService {
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
-                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
+//                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
                 transactionDto.setTransactionStatus(TransactionStatus.FAIL);
@@ -123,7 +123,7 @@ public class TransactionService implements ITransactionService {
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
-                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
+//                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
                 transactionDto.setTransactionStatus(TransactionStatus.FAIL);

@@ -3,7 +3,9 @@ package com.example.banking_transaction_service.service.service_impl;
 import com.example.banking_transaction_service.exception.ErrorCode;
 import com.example.banking_transaction_service.exception.exception.TransactionException;
 import com.example.banking_transaction_service.model.Balance;
+import com.example.banking_transaction_service.model.LatestSuccessTransaction;
 import com.example.banking_transaction_service.service.repository.BalanceRepository;
+import com.example.banking_transaction_service.service.repository.LastestSuccessTransactionRepository;
 import com.example.banking_transaction_service.service.service_i.BalanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import java.math.BigDecimal;
 public class BalanceServiceImpl implements BalanceService {
     @Autowired
     private BalanceRepository balanceRepository;
+
+    @Autowired
+    private LastestSuccessTransactionRepository lastestSuccessTransactionRepository;
 
     @Override
     public void createBalance(Balance balance) {
@@ -36,8 +41,14 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     @Transactional
     public void transfer(Long transactionId, Long sourceAccountId, Long destinationAccountId, BigDecimal amount) {
-        this.withdraw(transactionId, sourceAccountId, amount);
-        this.deposit(transactionId, destinationAccountId, amount);
+        Balance sourceAccountbalance = this.getBalance(sourceAccountId);
+        isBalanceEnough(sourceAccountbalance, amount);
+        sourceAccountbalance.subtractMoney(amount);
+        balanceRepository.save(sourceAccountbalance);
+        Balance destinationAccountbalance = this.getBalance(destinationAccountId);
+        destinationAccountbalance.addMoney(amount);
+        balanceRepository.save(destinationAccountbalance);
+        lastestSuccessTransactionRepository.save(new LatestSuccessTransaction(6996,transactionId));
     }
 
 
@@ -46,8 +57,8 @@ public class BalanceServiceImpl implements BalanceService {
     public void deposit(Long transactionId, Long destinationAccountId, BigDecimal amount) {
         Balance balance = this.getBalance(destinationAccountId);
         balance.addMoney(amount);
-        balance.setLatestTransactionId(transactionId);
         balanceRepository.save(balance);
+        lastestSuccessTransactionRepository.save(new LatestSuccessTransaction(6996,transactionId));
     }
 
     @Override
@@ -56,8 +67,8 @@ public class BalanceServiceImpl implements BalanceService {
         Balance balance = this.getBalance(sourceAccountId);
         isBalanceEnough(balance, amount);
         balance.subtractMoney(amount);
-        balance.setLatestTransactionId(transactionId);
         balanceRepository.save(balance);
+        lastestSuccessTransactionRepository.save(new LatestSuccessTransaction(6996,transactionId));
     }
 
 

@@ -22,7 +22,7 @@ public class KafkaConsumerConfig {
 
     @Bean
     @Qualifier("transactionConsumerFactory")
-    public ConsumerFactory<String, TransactionResponse> transactionConsumerFactory() {
+    public ConsumerFactory<String, com.example.balancelogservice.Dto.TransactionResponse> transactionConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "group-transaction");
@@ -35,8 +35,8 @@ public class KafkaConsumerConfig {
 
     @Bean
     @Qualifier("transactionKafkaListenerContainerFactory")
-    public ConcurrentKafkaListenerContainerFactory<String, TransactionResponse> transactionKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TransactionResponse> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, com.example.balancelogservice.Dto.TransactionResponse> transactionKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, com.example.balancelogservice.Dto.TransactionResponse> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(transactionConsumerFactory());
 //        factory.getContainerProperties().setErrorHandler(new SeekToCurrentErrorHandler()); // Error handling
 //        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE); // Acknowledgment mode
