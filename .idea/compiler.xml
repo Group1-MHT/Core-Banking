@@ -12,6 +12,7 @@
         <module name="banking_account_currency_service" />
         <module name="banking_transaction_service" />
         <module name="banking_manager_user_service" />
+        <module name="banking_authorization_server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,6 +22,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="banking_account_currency_service" options="-parameters" />
+      <module name="banking_authorization_server" options="-parameters" />
       <module name="banking_eureka_server" options="-parameters" />
       <module name="banking_gateway" options="-parameters" />
       <module name="banking_manager_user_service" options="-parameters" />

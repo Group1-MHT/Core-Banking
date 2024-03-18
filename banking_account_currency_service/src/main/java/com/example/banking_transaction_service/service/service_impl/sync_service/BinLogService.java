@@ -1,4 +1,4 @@
-package com.example.banking_transaction_service.service_impl.SyncService;
+package com.example.banking_transaction_service.service.service_impl.sync_service;
 
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -27,6 +27,8 @@ public class BinLogService {
                     "\"C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\" + fileName + "\""
             );
 
+            logger.info(processBuilder.toString());
+
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
@@ -34,13 +36,14 @@ public class BinLogService {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.equals(transactionInLog)){
-                    reader.close();
-                    process.destroy();
-                    logger.info("Find transaction id Succes");
-                    logger.info("Stop reading binary log");
-                    return true;
-                };
+                System.out.println(line);
+//                if (line.equals(transactionInLog)){
+//                    reader.close();
+//                    process.destroy();
+//                    logger.info("Find transaction id Succes");
+//                    logger.info("Stop reading binary log");
+//                    return true;
+//                };
             }
 
             int exitCode = process.waitFor();

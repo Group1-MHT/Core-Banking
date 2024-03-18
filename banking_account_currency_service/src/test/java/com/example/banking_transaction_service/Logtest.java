@@ -2,7 +2,8 @@ package com.example.banking_transaction_service;
 
 import com.example.banking_transaction_service.response.TransactionResponse;
 import com.example.banking_transaction_service.service.repository.BalanceRepository;
-import com.example.banking_transaction_service.service_impl.SyncService.BinLogService;
+import com.example.banking_transaction_service.service.service_impl.sync_service.BinLogService;
+//import com.example.banking_transaction_service.service_impl.SyncService.BinLogService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,9 +35,9 @@ public class Logtest {
         Map<String,Object> masterStatus = balanceRepository.getMasterStatus();
         System.out.println(masterStatus.get("File"));
         String fileName = (String) masterStatus.get("File");
-        String start = "2024-03-12 08:00:15";
-        String stop = "2024-03-12 08:01:15";
-        boolean check = this.binLogService.ReadBinlog(fileName,start,stop,103L);
+        String start = "2024-03-15 12:24:16.786230";
+        String stop = "2024-03-15 12:25:16.786230";
+        boolean check = this.binLogService.ReadBinlog(fileName,start,stop,1L);
         if (check){
             System.out.println("Transaction sucess");
         } else System.out.println("fail");

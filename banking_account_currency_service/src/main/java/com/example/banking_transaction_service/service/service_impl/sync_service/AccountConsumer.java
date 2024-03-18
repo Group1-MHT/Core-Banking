@@ -17,7 +17,7 @@ public class AccountConsumer {
 
     private final BalanceRepository balanceRepository;
 
-    private final com.example.banking_transaction_service.service_impl.SyncService.BinLogService binLogService;
+    private final BinLogService binLogService;
 
     private KafkaTemplate<String, TransactionResponse> transactionResponseKafkaTemplate;
 
@@ -25,7 +25,7 @@ public class AccountConsumer {
     private final Logger logger = LoggerFactory.getLogger(AccountConsumer.class);
 
     public AccountConsumer(BalanceRepository balanceRepository,
-                           com.example.banking_transaction_service.service_impl.SyncService.BinLogService binLogService,
+                           BinLogService binLogService,
                            @Qualifier("transactionResponseKafkaTemplate") KafkaTemplate<String, TransactionResponse> transactionResponseKafkaTemplate) {
         this.balanceRepository = balanceRepository;
         this.binLogService = binLogService;
