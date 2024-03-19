@@ -25,9 +25,6 @@ public class Balance {
     @JoinColumn(name = "currency_code", nullable = false)
     private Currency currency;
 
-    @Column(name = "latest_transaction_id")
-    private Long latestTransactionId;
-
 
     public void subtractMoney(BigDecimal money) {
         this.balance = this.balance.subtract(money);

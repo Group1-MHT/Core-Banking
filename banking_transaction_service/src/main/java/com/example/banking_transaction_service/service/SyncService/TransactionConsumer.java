@@ -22,9 +22,9 @@ public class TransactionConsumer {
     private TransactionRepository transactionRepository;
 
     @KafkaListener(topics = "transaction-topic",groupId = "group-transaction",containerFactory = "transactionKafkaListenerContainerFactory")
-    public void handleTransactionResponse(ConsumerRecord<String, TransactionResponse> record) throws JsonProcessingException {
+    public void handleTransactionResponse(ConsumerRecord<String, com.example.balancelogservice.Dto.TransactionResponse> record) throws JsonProcessingException {
         logger.info("receive message from balancer service");
-        TransactionResponse transactionResponse = record.value();
+        com.example.balancelogservice.Dto.TransactionResponse transactionResponse = record.value();
         Transaction transaction = transactionRepository.findById(transactionResponse.getTransactionId()).get();
         if (transactionResponse.getCode() == 200){
             transaction.setTransactionStatus(TransactionStatus.SUCCESS);
