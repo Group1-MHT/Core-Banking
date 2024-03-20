@@ -2,10 +2,12 @@ package com.example.banking_transaction_service.service.impl;
 
 
 import com.example.banking_transaction_service.dto.TransactionDTO;
+import com.example.banking_transaction_service.exception.AppException;
+import com.example.banking_transaction_service.exception.ErrorCode;
 import com.example.banking_transaction_service.model.Transaction;
 import com.example.banking_transaction_service.model.TransactionStatus;
 import com.example.banking_transaction_service.repository.TransactionRepository;
-import com.example.banking_transaction_service.response.ApiResponse;
+import com.example.banking_transaction_service.response.TransactionResponse;
 import com.example.banking_transaction_service.service.BalanceClient;
 import com.example.banking_transaction_service.service.ITransactionService;
 import com.example.banking_transaction_service.service.mapper.IConverterDto;
@@ -13,11 +15,15 @@ import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 @Service
 public class TransactionService implements ITransactionService {
@@ -42,35 +48,47 @@ public class TransactionService implements ITransactionService {
         this.askBalanceKafkaTemplate = askBalanceKafkaTemplate;
     }
 
-//    public List<TransactionDto> getAccountTransactionHistory(Long accountId) throws Exception {
-//        List<TransactionDto> transactionHistory = (List<TransactionDto>) this.transactionConverter
-//                                                .convertToListDto(
-//                                                        this.transactionRepository
-//                                                                .findAllBysourceAccountIdAndDestinationAccountIdOrOrderByIdDesc(accountId)
-//                                                );
-//        if(transactionHistory == null){
-//            throw new AppException(ErrorCode.NO_TRANSACTION_HISTORY);
-//        }
-//        return transactionHistory;
-//    }
+    @Override
+    public List<TransactionDTO> getAccountTransactionHistory(Long accountId, int pageNumber) {
+        int limit = 10;
+        Sort sort = Sort.by(Sort.Direction.DESC,"id");
+        Pageable pageable = PageRequest.of(pageNumber,limit,sort);
+        List<TransactionDTO> transactionHistory = (List<TransactionDTO>) this.transactionConverter
+                                                .convertToListDto(
+                                                        this.transactionRepository
+                                                                .findAccountHistoryTransaction(accountId,pageable).toList()
+                                                );
+        if(transactionHistory == null){
+            throw new AppException(ErrorCode.NO_TRANSACTION_HISTORY,null);
+        }
+        return transactionHistory;
+    }
+
+    @Override
+    public TransactionDTO getTransactionById(Long transactionId){
+        Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() -> new AppException(ErrorCode.TRANSACTION_NOT_FOUND,null));
+        return transactionConverter.convertToDto(transaction);
+    }
 
 
     @Transactional
     @Override
     public TransactionDTO transfer(TransactionDTO transactionDto){
         try {
-            ApiResponse response = this.balanceClient.transferBalance(transactionDto).getBody();
+            TransactionResponse response = this.balanceClient.transferBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
-                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
+//                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
-                transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
+                transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+                transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
+            }
         } catch (Exception e){
             transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+            transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
         } finally {
-            Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
             return transactionDto;
         }
     }
@@ -79,18 +97,20 @@ public class TransactionService implements ITransactionService {
     @Override
     public TransactionDTO withdraw(TransactionDTO transactionDto){
         try {
-            ApiResponse response = this.balanceClient.withdrawBalance(transactionDto).getBody();
+            TransactionResponse response = this.balanceClient.withdrawBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
-                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
+//                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
-                transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
+                transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+                transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
+            }
         } catch (Exception e){
             transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+            transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
         } finally {
-            Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
             return transactionDto;
         }
     }
@@ -99,18 +119,20 @@ public class TransactionService implements ITransactionService {
     @Override
     public TransactionDTO deposit(TransactionDTO transactionDto){
         try {
-            ApiResponse response = this.balanceClient.depositBalance(transactionDto).getBody();
+            TransactionResponse response = this.balanceClient.depositBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
-                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
+//                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
             }
             else {
-                transactionDto.setTransactionStatus(TransactionStatus.FAIL);}
+                transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+                transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
+            }
         } catch (Exception e){
             transactionDto.setTransactionStatus(TransactionStatus.FAIL);
+            transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
         } finally {
-            Transaction transaction = transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
             return transactionDto;
         }
     }
@@ -124,7 +146,7 @@ public class TransactionService implements ITransactionService {
         return transactionSended;
     }
 
-    private TransactionDTO handlerResponse(TransactionDTO transactionDto, ApiResponse response){
+    private TransactionDTO handlerResponse(TransactionDTO transactionDto, TransactionResponse response){
         transactionDto.setMessage(response.getMessage());
         if (response.getCode() == 200){
             transactionDto.setTransactionStatus(TransactionStatus.SUCCESS);
