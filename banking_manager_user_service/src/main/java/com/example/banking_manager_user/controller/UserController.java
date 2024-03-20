@@ -7,6 +7,7 @@ import com.example.banking_manager_user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/as/user/create")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff')")
     public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
 
         List<String> roleNames = userDto.getRoles();
@@ -27,35 +29,41 @@ public class UserController {
     }
 
     @PutMapping("/asu/user/update/{userId}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff') or hasAuthority('user')" )
     public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody User updatedUser) {
         User updated = userService.updateUser(userId, updatedUser);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/as/user/delete/{userId}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff')")
     public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }
 
     @GetMapping("/as/user/roles/{userId}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff')")
     public ResponseEntity<List<Role>> getUserRoles(@PathVariable Integer userId) {
         List<Role> userRoles = userService.getUserRoles(userId);
         return new ResponseEntity<>(userRoles, HttpStatus.OK);
     }
 
     @PostMapping("/as/user/grant-role/{userId}/{roleId}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff')")
     public ResponseEntity<String> grantRole(@PathVariable Integer userId, @PathVariable Integer roleId) {
         userService.grantRole(userId, roleId);
         return new ResponseEntity<>("Role granted successfully", HttpStatus.OK);
     }
 
     @PostMapping("/as/user/revoke-role/{userId}/{roleId}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff')")
     public ResponseEntity<String> revokeRole(@PathVariable Integer userId, @PathVariable Integer roleId) {
         userService.revokeRole(userId, roleId);
         return new ResponseEntity<>("Role revoked successfully", HttpStatus.OK);
     }
     @GetMapping("/as/user/getById/{id}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('Staff')")
     public ResponseEntity<User> getById(@PathVariable Integer id){
         User infoUser = userService.getById(id);
         return new ResponseEntity<>(infoUser,HttpStatus.OK);

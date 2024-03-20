@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Configuration
 @EnableKafka
-public class TransactionKafkaConsumerConfig {
+public class  TransactionKafkaConsumerConfig {
 
     @Bean
     @Qualifier("transactionConsumerFactory")
