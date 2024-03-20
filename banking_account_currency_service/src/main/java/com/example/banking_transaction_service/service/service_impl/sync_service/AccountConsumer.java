@@ -36,15 +36,15 @@ public class AccountConsumer {
     public void handleAskingTransaction(ConsumerRecord<String, TransactionDTO> record) throws JsonProcessingException {
         logger.info("receive message ask from transaction service");
         TransactionDTO transactionDTO = record.value();
-        String startTime = transactionDTO.getCreatedAt().toString();
-        String stopTime = transactionDTO.getCreatedAt().plusMinutes(1L).toString();
-        String fileName = (String) balanceRepository.getMasterStatus().get("File");
-        boolean checkTransactionSuccess = binLogService.ReadBinlog(fileName,startTime,stopTime, transactionDTO.getId());
-        if (checkTransactionSuccess){
-            transactionResponseKafkaTemplate.send("transaction-topic",new TransactionResponse(200,"transaction already handle success", transactionDTO.getId()));
-        } else {
-            transactionResponseKafkaTemplate.send("transaction-topic",new TransactionResponse(404,"not-found", transactionDTO.getId()));
-        }
+//        String startTime = transactionDTO.getCreatedAt().toString();
+//        String stopTime = transactionDTO.getCreatedAt().plusMinutes(1L).toString();
+//        String fileName = (String) balanceRepository.getMasterStatus().get("File");
+//        boolean checkTransactionSuccess = binLogService.ReadBinlog(fileName,startTime,stopTime, transactionDTO.getId());
+//        if (checkTransactionSuccess){
+//            transactionResponseKafkaTemplate.send("transaction-topic",new TransactionResponse(200,"transaction already handle success", transactionDTO.getId()));
+//        } else {
+//            transactionResponseKafkaTemplate.send("transaction-topic",new TransactionResponse(404,"not-found", transactionDTO.getId()));
+//        }
         logger.info("handle message ask from transaction service done!");
     }
 
