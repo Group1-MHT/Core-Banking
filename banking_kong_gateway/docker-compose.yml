@@ -27,7 +27,7 @@ services:
       - kong-net
     environment:
       KONG_PG_HOST: kong-database
-      KONG_DATABASE: postgres 
+      KONG_DATABASE: postgres
       KONG_PG_PASSWORD: kong
       KONG_PASSWORD: kong
     command: kong migrations bootstrap
@@ -51,7 +51,7 @@ services:
       KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001
       KONG_ADMIN_GUI_URL: http://localhost:8002
-      KONG_PLUGINS: bundled,sync-eureka  
+      KONG_PLUGINS: bundled,sync-eureka
       # KONG_LICENSE_DATA: # Insert license data here
     ports:
       - 8000:8000
@@ -65,37 +65,27 @@ services:
     depends_on:
       - kong-database
       - kong-migrations
- 
-  eureka-server:
-    image: taskbeez/eureka-server:master
-    ports:
-    - "8761:8761"
+#
+#  consul:
+#    image: consul:1.15.4
+#    ports:
+#      - 8600:8600
+#      - 8500:8500
+#    environment:
+#      KONG_PG_HOST: kong-database.service.consul
+#      # volumes:
+#      #   - ./consul-config.json:/etc/consul.d/config.json:ro
+#      # command: consul agent -dev -config-dir=/etc/consul.d
+#    networks:
+#      - kong-net
+
+  zipkin:
+    image: openzipkin/zipkin:2
     networks:
       - kong-net
-    environment:
-      eureka.instance.hostname: eureka-server
-      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
- 
-  # consul:
-  #   image: consul:1.15.4
-  #   ports:
-  #    - "8600:8600/tcp"   
-  #    - "8500:8500/tcp"  
-  #   environment:
-  #     KONG_PG_HOST: kong-database.service.consul
-  #   # volumes:
-  #   #   - ./consul-config.json:/etc/consul.d/config.json:ro
-  #   # command: consul agent -dev -config-dir=/etc/consul.d
-  #   networks:
-  #     - kong-net
-
-  # zipkin:
-  #   image: openzipkin/zipkin:2
-  #   networks:
-  #     - kong-net
-  #   ports:
-  #     - "9411:9411"
-  #   restart: on-failure
+    ports:
+      - "9411:9411"
+    restart: on-failure
 
 volumes:
   kong-data:
