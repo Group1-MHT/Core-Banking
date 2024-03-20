@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/banking_transaction_service/pom.xml" />
         <option value="$PROJECT_DIR$/banking_manager_user_service/pom.xml" />
         <option value="$PROJECT_DIR$/banking_authorization_server/pom.xml" />
+        <option value="$PROJECT_DIR$/BalanceLogService/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />

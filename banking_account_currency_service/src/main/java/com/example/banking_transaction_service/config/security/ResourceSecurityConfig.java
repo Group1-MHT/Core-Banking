@@ -1,4 +1,4 @@
-package com.example.banking_manager_user.config;
+package com.example.banking_transaction_service.config.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,10 +10,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableMethodSecurity
-public class ResourceServerConfig {
+public class ResourceSecurityConfig {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerUri;
@@ -22,12 +21,14 @@ public class ResourceServerConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
+                        .antMatchers("/account-currency-service/asu/**").hasAnyRole("Admin","Staff","User")
+                        .antMatchers("/account-currency-service/as/**").hasAnyRole("Admin","Staff")
+                        .antMatchers("/account-currency-service/a/**").hasRole("Admin")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))))
                 .build();
     }
-
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter(){
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
