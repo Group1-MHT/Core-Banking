@@ -20,9 +20,7 @@ services:
       - ./kong-data:/var/lib/postgresql/data
 
   kong-migrations:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: kong/kong-gateway:latest
     networks:
       - kong-net
     environment:
@@ -35,9 +33,7 @@ services:
       - kong-database
 
   kong-gateway:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: kong/kong-gateway:latest
     networks:
       - kong-net
     environment:
@@ -51,7 +47,7 @@ services:
       KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001
       KONG_ADMIN_GUI_URL: http://localhost:8002
-      KONG_PLUGINS: bundled,sync-eureka
+      # KONG_PLUGINS: bundled,sync-eureka
       # KONG_LICENSE_DATA: # Insert license data here
     ports:
       - 8000:8000
@@ -80,7 +76,7 @@ services:
 #      - kong-net
 
   zipkin:
-    image: openzipkin/zipkin:2
+    image: openzipkin/zipkin:latest
     networks:
       - kong-net
     ports:
