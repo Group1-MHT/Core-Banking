@@ -10,6 +10,7 @@
         <module name="banking_eureka_server" />
         <module name="banking_transaction_service" />
         <module name="banking_manager_user_service" />
+        <module name="banking_config_server" />
         <module name="banking_gateway" />
         <module name="banking_account_currency_service" />
         <module name="BalanceLogService" />
@@ -25,6 +26,7 @@
       <module name="BalanceLogService" options="-parameters" />
       <module name="banking_account_currency_service" options="-parameters" />
       <module name="banking_authorization_server" options="-parameters" />
+      <module name="banking_config_server" options="-parameters" />
       <module name="banking_eureka_server" options="-parameters" />
       <module name="banking_gateway" options="-parameters" />
       <module name="banking_manager_user_service" options="-parameters" />

@@ -9,13 +9,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BankingAuthorizationServerApplication  {
+public class BankingAuthorizationServerApplication  /*implements  CommandLineRunner*/{
 
-	@Autowired
-	RoleRepository roleRepository;
-
+//	@Autowired
+//	private RoleRepository roleRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(BankingAuthorizationServerApplication.class, args);
 	}
 
+//	@Override
+//	public void run(String... args) throws Exception {
+//		Role adminRole = Role.builder().role(RoleName.Admin).build();
+//		Role userRole = Role.builder().role(RoleName.User).build();
+//		Role staffRole = Role.builder().role(RoleName.Staff).build();
+//		roleRepository.save(adminRole);
+//		roleRepository.save(userRole);
+//		roleRepository.save(staffRole);
+//	}
 }
