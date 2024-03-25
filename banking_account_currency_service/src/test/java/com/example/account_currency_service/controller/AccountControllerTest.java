@@ -160,7 +160,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void testUpdateAccountAccountNotFound() {
+    void testUpdateAccountNotFound() {
         Long accountId = 6L;
         AccountDTO accountDTO = AccountDTO.builder()
                 .userId(1L)

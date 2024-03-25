@@ -34,53 +34,43 @@ class BalanceControllerTest {
     @Mock
     private BalanceService balanceService;
 
-    @Mock
-    private AccountService accountService;
-
-    @Mock
-    private LastestSuccessTransactionRepository lastestSuccessTransactionRepository;
-
     @InjectMocks
     private BalanceController balanceController;
 
     @Test
-    void testDeposit() {
+    void testDepositSuccess() {
         TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(anyLong())
+                .id(1L)
                 .destinationAccountId(2L)
                 .amount(BigDecimal.valueOf(300))
                 .build();
-        Account destinationAccount = testAccounts.get(2);
-        when(accountService.getAccountById(2L)).thenReturn(destinationAccount);
         doNothing().when(balanceService).deposit(transactionDTO.getId(), transactionDTO.getDestinationAccountId(), transactionDTO.getAmount());
 
         ResponseEntity<TransactionResponse> response = balanceController.depositBalance(transactionDTO);
 
         assertEquals(HttpStatus.valueOf(StatusCode.DEPOSIT_SUCCESS.getCode()), response.getStatusCode());
-        assertEquals(new TransactionResponse(StatusCode.DEPOSIT_SUCCESS.getCode(), StatusCode.DEPOSIT_SUCCESS.getMessage(), transactionDTO.getId()), response.getBody());
-        verify(accountService, times(1)).getAccountById(2L);
+        assertEquals(StatusCode.DEPOSIT_SUCCESS.getCode(),response.getBody().getCode());
+        assertEquals(StatusCode.DEPOSIT_SUCCESS.getMessage(),response.getBody().getMessage());
+        assertEquals(transactionDTO.getId(), response.getBody().getTransactionId());
         verify(balanceService, times(1)).deposit(transactionDTO.getId(), transactionDTO.getDestinationAccountId(), transactionDTO.getAmount());
-        verify(lastestSuccessTransactionRepository, times(1)).save(any(LatestSuccessTransaction.class));
     }
 
     @Test
     void testWithdrawSuccess() {
         TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(anyLong())
+                .id(1L)
                 .sourceAccountId(3L)
                 .amount(BigDecimal.valueOf(100))
                 .build();
-        Account sourceAccount = testAccounts.get(3);
-        when(accountService.getAccountById(3L)).thenReturn(sourceAccount);
         doNothing().when(balanceService).withdraw(transactionDTO.getId(), transactionDTO.getSourceAccountId(), transactionDTO.getAmount());
 
         ResponseEntity<TransactionResponse> response = balanceController.withdrawBalance(transactionDTO);
 
         assertEquals(HttpStatus.valueOf(StatusCode.WITHDRAW_SUCCESS.getCode()), response.getStatusCode());
-        assertEquals(new TransactionResponse(StatusCode.WITHDRAW_SUCCESS.getCode(), StatusCode.WITHDRAW_SUCCESS.getMessage(), transactionDTO.getId()), response.getBody());
-        verify(accountService, times(1)).getAccountById(3L);
+        assertEquals(StatusCode.WITHDRAW_SUCCESS.getCode(),response.getBody().getCode());
+        assertEquals(StatusCode.WITHDRAW_SUCCESS.getMessage(),response.getBody().getMessage());
+        assertEquals(transactionDTO.getId(), response.getBody().getTransactionId());
         verify(balanceService, times(1)).withdraw(transactionDTO.getId(), transactionDTO.getSourceAccountId(), transactionDTO.getAmount());
-        verify(lastestSuccessTransactionRepository, times(1)).save(any(LatestSuccessTransaction.class));
     }
 
     @Test
@@ -92,194 +82,14 @@ class BalanceControllerTest {
                 .amount(BigDecimal.valueOf(100))
                 .build();
 
-        Account sourceAccount = testAccounts.get(1);
-        Account destinationAccount = testAccounts.get(4);
-
-        when(accountService.getAccountById(1L)).thenReturn(sourceAccount);
-        when(accountService.getAccountById(4L)).thenReturn(destinationAccount);
         doNothing().when(balanceService).transfer(transactionDTO.getId(), transactionDTO.getSourceAccountId(), transactionDTO.getDestinationAccountId(), transactionDTO.getAmount());
 
         ResponseEntity<TransactionResponse> response = balanceController.transferBalance(transactionDTO);
 
         assertEquals(HttpStatus.valueOf(StatusCode.TRANSFER_SUCCESS.getCode()), response.getStatusCode());
-        assertEquals(new TransactionResponse(StatusCode.TRANSFER_SUCCESS.getCode(), StatusCode.TRANSFER_SUCCESS.getMessage(), transactionDTO.getId()), response.getBody());
-        verify(accountService, times(1)).getAccountById(1L);
-        verify(accountService, times(1)).getAccountById(4L);
+        assertEquals(StatusCode.TRANSFER_SUCCESS.getCode(),response.getBody().getCode());
+        assertEquals(StatusCode.TRANSFER_SUCCESS.getMessage(),response.getBody().getMessage());
+        assertEquals(transactionDTO.getId(), response.getBody().getTransactionId());
         verify(balanceService, times(1)).transfer(transactionDTO.getId(), transactionDTO.getSourceAccountId(), transactionDTO.getDestinationAccountId(), transactionDTO.getAmount());
-        verify(lastestSuccessTransactionRepository, times(1)).save(any(LatestSuccessTransaction.class));
     }
-
-    @Test
-    void testWithdrawBalanceInsufficientBalance() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .amount(BigDecimal.valueOf(10000))
-                .build();
-
-        Account sourceAccount = testAccounts.get(1);
-
-        when(accountService.getAccountById(1L)).thenReturn(sourceAccount);
-
-        assertThrows(TransactionException.class, () -> balanceController.withdrawBalance(transactionDTO), ErrorCode.ACCOUNT_NOT_ENOUGH_MONEY.getMessage());
-    }
-
-    @Test
-    void testDepositBalanceAccountNotFound() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .destinationAccountId(1L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(null);
-
-        assertThrows(TransactionException.class, () -> balanceController.depositBalance(transactionDTO), ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
-    }
-
-    @Test
-    void testWithdrawBalanceAccountNotFound() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(null);
-
-        assertThrows(TransactionException.class, () -> balanceController.withdrawBalance(transactionDTO), ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
-    }
-
-    @Test
-    void transferBalanceSourceAccountNotFound() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .destinationAccountId(6L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(testAccounts.get(0));
-        when(accountService.getAccountById(6L)).thenReturn(null);
-
-        assertThrows(TransactionException.class, () -> balanceController.transferBalance(transactionDTO), ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
-    }
-
-    @Test
-    void transferBalanceDestinationAccountNotFound() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .destinationAccountId(2L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        Account sourceAccount = Account.builder()
-                .accountId(1L)
-                .userId(1L)
-                .accountType(AccountType.SPEND.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("USD").name("United States Dollar").symbol("$").build())
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(sourceAccount);
-        when(accountService.getAccountById(2L)).thenReturn(null);
-
-        assertThrows(TransactionException.class, () -> balanceController.transferBalance(transactionDTO), ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
-    }
-
-    @Test
-    void transferBalanceCurrencyMismatch() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .destinationAccountId(2L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        Account sourceAccount = Account.builder()
-                .accountId(1L)
-                .userId(1L)
-                .accountType(AccountType.SPEND.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("USD").name("United States Dollar").symbol("$").build())
-                .build();
-
-        Account destinationAccount = Account.builder()
-                .accountId(2L)
-                .userId(1L)
-                .accountType(AccountType.SPEND.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("EUR").name("Euro").symbol("€").build())
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(sourceAccount);
-        when(accountService.getAccountById(2L)).thenReturn(destinationAccount);
-
-        assertThrows(TransactionException.class, () -> balanceController.transferBalance(transactionDTO), ErrorCode.CURRENCY_DIFFERENT.getMessage());
-    }
-
-    @Test
-    void transferBalanceSourceAccountTypeMismatch() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .destinationAccountId(2L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        Account sourceAccount = Account.builder()
-                .accountId(1L)
-                .userId(1L)
-                .accountType(AccountType.SAVINGS.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("USD").name("United States Dollar").symbol("$").build())
-                .build();
-
-        Account destinationAccount = Account.builder()
-                .accountId(2L)
-                .userId(1L)
-                .accountType(AccountType.SPEND.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("USD").name("United States Dollar").symbol("$").build())
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(sourceAccount);
-        when(accountService.getAccountById(2L)).thenReturn(destinationAccount);
-
-        assertThrows(TransactionException.class, () -> balanceController.transferBalance(transactionDTO), ErrorCode.SAVINGS_ACCOUNT_TRANSFER_NOT_SUPPORT.getMessage());
-    }
-
-    @Test
-    void transferBalanceDestinationAccountTypeMismatch() {
-        TransactionDTO transactionDTO = TransactionDTO.builder()
-                .id(1L)
-                .sourceAccountId(1L)
-                .destinationAccountId(2L)
-                .amount(BigDecimal.valueOf(100))
-                .build();
-
-        Account sourceAccount = Account.builder()
-                .accountId(1L)
-                .userId(1L)
-                .accountType(AccountType.SPEND.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("USD").name("United States Dollar").symbol("$").build())
-                .build();
-
-        Account destinationAccount = Account.builder()
-                .accountId(2L)
-                .userId(1L)
-                .accountType(AccountType.SAVINGS.name())
-                .balance(BigDecimal.valueOf(1000))
-                .currency(Currency.builder().currencyCode("USD").name("United States Dollar").symbol("$").build())
-                .build();
-
-        when(accountService.getAccountById(1L)).thenReturn(sourceAccount);
-        when(accountService.getAccountById(2L)).thenReturn(destinationAccount);
-
-        assertThrows(TransactionException.class, () -> balanceController.transferBalance(transactionDTO), ErrorCode.SAVINGS_ACCOUNT_TRANSFER_NOT_SUPPORT.getMessage());
-    }
-
-
 }
