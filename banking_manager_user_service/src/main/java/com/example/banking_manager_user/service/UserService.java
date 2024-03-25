@@ -1,8 +1,8 @@
 package com.example.banking_manager_user.service;
 
 import com.example.banking_manager_user.dto.UserDto;
-import com.example.banking_manager_user.entity.Role;
-import com.example.banking_manager_user.entity.User;
+import com.example.banking_manager_user.model.Role;
+import com.example.banking_manager_user.model.User;
 
 import java.util.List;
 

@@ -21,10 +21,11 @@ public class ResourceSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/account-currency-service/asu/**").hasAnyRole("Admin","Staff","User")
-                        .antMatchers("/account-currency-service/as/**").hasAnyRole("Admin","Staff")
-                        .antMatchers("/account-currency-service/a/**").hasRole("Admin")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
+//                        .antMatchers("/account-currency-service/asu/**").hasAnyRole("Admin","Staff","User")
+//                        .antMatchers("/account-currency-service/as/**").hasAnyRole("admin","staff")
+//                        .antMatchers("/account-currency-service/a/**").hasRole("admin")
+//                        .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))))
                 .build();
