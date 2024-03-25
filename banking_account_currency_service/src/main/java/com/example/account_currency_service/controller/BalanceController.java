@@ -1,6 +1,5 @@
 package com.example.account_currency_service.controller;
 
-import com.example.account_currency_service.model.Balance;
 import com.example.account_currency_service.dto.TransactionDTO;
 import com.example.account_currency_service.response.StatusCode;
 import com.example.account_currency_service.response.TransactionResponse;
@@ -9,7 +8,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
@@ -18,12 +20,6 @@ public class BalanceController {
 
     @Autowired
     private BalanceService balanceService;
-
-
-    @GetMapping("/su/balance/{accountId}")
-    public ResponseEntity<Balance> getBalance(@PathVariable("accountId") Long accountId) {
-        return ResponseEntity.ok(balanceService.getBalance(accountId));
-    }
 
     @PostMapping("/su/deposit")
     public ResponseEntity<TransactionResponse> depositBalance(@RequestBody TransactionDTO transaction) {
@@ -48,7 +44,6 @@ public class BalanceController {
     @PostMapping("/su/transfer")
     public ResponseEntity<TransactionResponse> transferBalance(@RequestBody TransactionDTO transaction) throws InterruptedException {
         balanceService.transfer(transaction.getId(), transaction.getSourceAccountId(), transaction.getDestinationAccountId(), transaction.getAmount());
-        Thread.sleep(100000);
         return ResponseEntity.status(HttpStatus.valueOf(StatusCode.TRANSFER_SUCCESS.getCode())).body(
                 new TransactionResponse(StatusCode.TRANSFER_SUCCESS.getCode(),
                         StatusCode.TRANSFER_SUCCESS.getMessage(),

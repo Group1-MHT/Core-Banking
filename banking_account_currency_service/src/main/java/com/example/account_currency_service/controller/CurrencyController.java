@@ -1,7 +1,7 @@
 package com.example.account_currency_service.controller;
 
-import com.example.account_currency_service.model.Currency;
 import com.example.account_currency_service.dto.CurrencyDTO;
+import com.example.account_currency_service.model.Currency;
 import com.example.account_currency_service.service.service_i.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

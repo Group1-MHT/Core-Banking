@@ -1,4 +1,4 @@
-package com.example.account_currency_service.security.config;
+package com.example.account_currency_service.config.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,20 +21,20 @@ public class ResourceSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/account-currency-service/asu/**").hasAnyRole("Admin","Staff","User")
-                        .antMatchers("/account-currency-service/as/**").hasAnyRole("Admin","Staff")
+                        .antMatchers("/account-currency-service/asu/**").hasAnyRole("Admin", "Staff", "User")
+                        .antMatchers("/account-currency-service/as/**").hasAnyRole("Admin", "Staff")
                         .antMatchers("/account-currency-service/a/**").hasRole("Admin")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))))
                 .build();
     }
+
     @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter(){
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
-
         JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
         authenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return authenticationConverter;

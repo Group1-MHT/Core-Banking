@@ -3,6 +3,7 @@ package com.example.account_currency_service.dto;
 import com.example.account_currency_service.dto.constant.TransactionStatus;
 import com.example.account_currency_service.dto.constant.TransactionType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TransactionDTO {
 
     private Long id;

@@ -4,11 +4,9 @@ import com.example.account_currency_service.dto.AccountDTO;
 import com.example.account_currency_service.exception.ErrorCode;
 import com.example.account_currency_service.exception.exception.AppException;
 import com.example.account_currency_service.model.Account;
-import com.example.account_currency_service.model.Balance;
 import com.example.account_currency_service.model.Currency;
 import com.example.account_currency_service.service.client.UserClient;
 import com.example.account_currency_service.service.service_i.AccountService;
-import com.example.account_currency_service.service.service_i.BalanceService;
 import com.example.account_currency_service.service.service_i.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +25,6 @@ public class AccountController {
     private CurrencyService currencyService;
 
     @Autowired
-    private BalanceService balanceService;
-
-    @Autowired
     private UserClient userClient;
 
     @PostMapping("/asu/account")
@@ -37,17 +32,12 @@ public class AccountController {
         if (!ObjectUtils.isEmpty(userClient.getById(Math.toIntExact(accountDTO.getUserId())).getBody())) {
             Currency currency = currencyService.getCurrencyByCode(accountDTO.getCurrencyCode());
             if (!ObjectUtils.isEmpty(currency)) {
-                Account newAccount = accountService.createAccount(Account.builder()
+                return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(Account.builder()
                         .userId(accountDTO.getUserId())
                         .accountType(accountDTO.getAccountType().name())
-                        .build());
-                Balance balance = Balance.builder()
-                        .accountId(newAccount.getAccountId())
                         .balance(accountDTO.getBalance())
                         .currency(currency)
-                        .build();
-                balanceService.createBalance(balance);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully!");
+                        .build()));
             } else {
                 throw new AppException(ErrorCode.CURRENCY_NOT_FOUND);
             }
@@ -71,19 +61,16 @@ public class AccountController {
             accountDTO) {
         if (!ObjectUtils.isEmpty(userClient.getById(Math.toIntExact(accountDTO.getUserId())).getBody())) {
             if (!ObjectUtils.isEmpty(accountService.getAccountById(accountId))) {
-                if (!ObjectUtils.isEmpty(currencyService.getCurrencyByCode(accountDTO.getCurrencyCode()))) {
-                    accountService.updateAccount(Account.builder()
+                Currency currency = currencyService.getCurrencyByCode(accountDTO.getCurrencyCode());
+                if (!ObjectUtils.isEmpty(currency)) {
+                    Account updatedAccount = accountService.updateAccount(Account.builder()
                             .accountId(accountId)
                             .userId(accountDTO.getUserId())
                             .accountType(accountDTO.getAccountType().name())
+                            .balance(accountDTO.getBalance())
+                            .currency(currency)
                             .build());
-                    Balance balance = balanceService.getBalance(accountId);
-                    if (balance.getBalance().compareTo(accountDTO.getBalance()) < 0) {
-                        balanceService.deposit(null, accountId, accountDTO.getBalance());
-                    } else {
-                        balanceService.withdraw(null, accountId, accountDTO.getBalance());
-                    }
-                    return ResponseEntity.ok("Account updated successfully!");
+                    return ResponseEntity.ok(updatedAccount);
                 } else {
                     throw new AppException(ErrorCode.CURRENCY_NOT_FOUND);
                 }
@@ -97,7 +84,6 @@ public class AccountController {
 
     @DeleteMapping("/as/account/{accountId}")
     public ResponseEntity<?> deleteAccount(@PathVariable Long accountId) {
-        balanceService.deleteBalance(accountId);
         accountService.deleteAccount(accountId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

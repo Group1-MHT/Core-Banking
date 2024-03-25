@@ -1,21 +1,11 @@
 package com.example.account_currency_service.service.service_i;
 
-import com.example.account_currency_service.model.Balance;
-
 import java.math.BigDecimal;
 
 public interface BalanceService {
+    void deposit(Long id, Long destinationAccountId, BigDecimal amount);
 
-    Balance getBalance(Long accountId);
+    void withdraw(Long id, Long sourceAccountId, BigDecimal amount);
 
-    void withdraw(Long transactionId, Long sourceAccountId, BigDecimal amount);
-
-    void deposit(Long transactionId, Long destinationAccountId, BigDecimal amount);
-
-    void transfer(Long transactionId, Long sourceAccountId, Long destinationAccountId, BigDecimal amount);
-
-    void createBalance(Balance balance);
-
-    void deleteBalance(Long accountId);
-
+    void transfer(Long id, Long sourceAccountId, Long destinationAccountId, BigDecimal amount);
 }
