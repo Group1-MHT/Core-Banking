@@ -17,13 +17,9 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LatestSuccessTransaction {
-
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
-
     @Column(name = "latest_transaction_id")
     private Long latestTransactionId;
-
-
 }

@@ -20,22 +20,22 @@ import java.util.Map;
 @Service
 public class ReadLogService {
 
-    @Value("${Dbhostname}")
+    @Value("${dbHostname}")
     private String hostname;
 
-    @Value("${Dbport}")
+    @Value("${dbPort}")
     private int port;
 
-    @Value("${Dbschema}")
+    @Value("${dbSchema}")
     private String schema;
 
-    @Value("${Dbusername}")
+    @Value("${dbUsername}")
     private String username;
 
-    @Value("${Dbpassword}")
+    @Value("${dbPassword}")
     private String password;
 
-    @Value("${Dbtablename}")
+    @Value("${dbTablename}")
     private String tableName;
     private long tableId;
 

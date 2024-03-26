@@ -16,11 +16,11 @@ class BankingTransactionServiceApplicationTests {
 
 	@Test
 	void transactionTest(){
-		TransactionDTO transactionDTO = new TransactionDTO();
-		transactionDTO.setSourceAccountId(1L);
-		transactionDTO.setDestinationAccountId(2L);
-		transactionDTO.setTransactionType(TransactionType.TRANSFER);
-		transactionDTO.setAmount(BigDecimal.ONE);
+//		TransactionDTO transactionDTO = new TransactionDTO();
+//		transactionDTO.setSourceAccountId(1L);
+//		transactionDTO.setDestinationAccountId(2L);
+//		transactionDTO.setTransactionType(TransactionType.TRANSFER);
+//		transactionDTO.setAmount(BigDecimal.ONE);
 
 
 	}

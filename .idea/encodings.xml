@@ -3,12 +3,9 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/BalanceLogService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking_account_currency_service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/banking_authorization_server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking_config_server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking_eureka_server/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/banking_gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking_manager_user_service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/banking_manager_user_service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking_transaction_service/src/main/java" charset="UTF-8" />
   </component>
 </project>

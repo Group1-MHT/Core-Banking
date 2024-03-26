@@ -1,6 +1,7 @@
 package com.example.account_currency_service.service.client;
 
 import com.example.account_currency_service.config.UserFeignClientInterceptor;
+
 import com.example.account_currency_service.model.share.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

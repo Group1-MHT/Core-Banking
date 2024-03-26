@@ -3,6 +3,7 @@ package com.example.banking_transaction_service.dto;
 //import com.example.banking_transaction_service.model.Account;
 import com.example.banking_transaction_service.model.TransactionStatus;
 import com.example.banking_transaction_service.model.TransactionType;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class TransactionDTO {
 
     private Long id;

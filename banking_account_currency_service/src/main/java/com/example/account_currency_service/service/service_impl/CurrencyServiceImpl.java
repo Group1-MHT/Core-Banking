@@ -12,7 +12,6 @@ import org.springframework.util.ObjectUtils;
 import javax.transaction.Transactional;
 import java.util.List;
 
-// CurrencyServiceImpl.java
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
     @Autowired
@@ -34,7 +33,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         if (ObjectUtils.isEmpty(currencyRepository.findByCurrencyCode(currency.getCurrencyCode()))) {
             return currencyRepository.save(currency);
         } else {
-            throw new AppException(ErrorCode.DUPLICATED_CURRENCY);
+            throw new AppException(ErrorCode.CURRENCY_DUPLICATED);
         }
     }
 
