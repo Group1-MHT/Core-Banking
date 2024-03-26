@@ -2,6 +2,7 @@ package com.example.banking_manager_user.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 @Table(name = "user")
 public class User implements UserDetails {
 
@@ -38,7 +40,7 @@ public class User implements UserDetails {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

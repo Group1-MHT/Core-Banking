@@ -7,8 +7,8 @@ import com.example.banking_manager_user.model.User;
 import java.util.List;
 
 public interface UserService {
-    User createUser(UserDto userDto, List<String> name);
-    User updateUser(Integer id, User updateUser);
+    User createUser(UserDto userDto);
+    User updateUser(Integer id, UserDto userDto);
     void deleteUser(Integer userId);
     List<Role> getUserRoles(Integer id);
     void grantRole(Integer userId, Integer roleId);

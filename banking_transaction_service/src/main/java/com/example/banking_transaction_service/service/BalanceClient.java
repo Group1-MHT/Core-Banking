@@ -1,6 +1,7 @@
 package com.example.banking_transaction_service.service;
 
 
+import com.example.banking_transaction_service.config.security.FeignClientInterceptor;
 import com.example.banking_transaction_service.dto.TransactionDTO;
 import com.example.banking_transaction_service.response.TransactionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "balance", url = "http://localhost:9002/account-currency-service/")
+@FeignClient(value = "balance", url = "http://localhost:9002/account-currency-service/", configuration = FeignClientInterceptor.class)
 public interface BalanceClient {
 
     @PostMapping("/su/withdraw")

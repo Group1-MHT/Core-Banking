@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +24,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -31,28 +31,46 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public User createUser(UserDto userDto, List<String> roleNames) {
+    public User createUser(UserDto userDto) {
+        User user = User.builder()
+                .createdAt(LocalDateTime.now())
+                .email(userDto.getEmail())
+                .fullName(userDto.getFullName())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .username(userDto.getUsername())
+                .build();
+        List<String> roleNames = new ArrayList<>();
+        Set<Role> roles = new HashSet<>();
 
-        return userRepository.save(getUserFromRequest(userDto,roleNames));
+        for (String roleName : roleNames){
+            Role role = roleRepository.findByName(roleName)
+                    .orElseGet(() -> {
+                        Role newRole = new Role();
+                        newRole.setName(roleName);
+                        return roleRepository.save(newRole);
+                    });
+            roles.add(role);
+        }
+        user.setRoles(roles);
+        return userRepository.save(user);
     }
 
-    public User updateUser(Integer userId, User updatedUser) {
-        User existingUser = userRepository.findById(userId)
+    public User updateUser(Integer userId, UserDto userDto) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setFullName(updatedUser.getFullName());
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setFullName(userDto.getFullName());
 
-        return userRepository.save(existingUser);
+        return userRepository.save(user);
     }
 
     @Transactional
     public void deleteUser(Integer userId) {
-        User existingUser = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-
-        userRepository.delete(existingUser);
+        userRepository.delete(user);
     }
 
     public List<Role> getUserRoles(Integer userId) {
@@ -87,30 +105,5 @@ public class UserServiceImpl implements UserService {
     public User getById(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    public User getUserFromRequest(UserDto userDto, List<String> roleNames){
-        User user = new User();
-
-        user.setCreatedAt(LocalDateTime.now());
-
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setEmail(userDto.getEmail());
-        user.setFullName(userDto.getFullName());
-
-        Set<Role> roles = new HashSet<>();
-
-        for (String roleName : roleNames) {
-            Role role = roleRepository.findByName(roleName)
-                    .orElseGet(() -> {
-                        Role newRole = new Role();
-                        newRole.setName(roleName);
-                        return roleRepository.save(newRole);
-                    });
-            roles.add(role);
-        }
-        user.setRoles(roles);
-        return user;
     }
 }
