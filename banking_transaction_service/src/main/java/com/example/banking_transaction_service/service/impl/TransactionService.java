@@ -28,40 +28,30 @@ import java.util.List;
 @Service
 public class TransactionService implements ITransactionService {
 
-    private static Logger logger = LoggerFactory.getLogger(TransactionService.class);
-
     private BalanceClient balanceClient;
 
     private final TransactionRepository transactionRepository;
-
-    private KafkaTemplate<String, TransactionDTO> askBalanceKafkaTemplate;
 
     private final IConverterDto<Transaction, TransactionDTO> transactionConverter;
 
     public TransactionService(BalanceClient balanceClient,
                               TransactionRepository transactionRepository,
-                              @Qualifier("transactionMapper")IConverterDto<Transaction, TransactionDTO> transactionConverter,
-                              @Qualifier("transactionAskKafkaTemplate") KafkaTemplate<String, TransactionDTO> askBalanceKafkaTemplate){
+                              @Qualifier("transactionMapper")IConverterDto<Transaction, TransactionDTO> transactionConverter){
         this.transactionRepository = transactionRepository;
         this.transactionConverter = transactionConverter;
         this.balanceClient = balanceClient;
-        this.askBalanceKafkaTemplate = askBalanceKafkaTemplate;
     }
 
     @Override
     public List<TransactionDTO> getAccountTransactionHistory(Long accountId, int pageNumber) {
         int limit = 10;
-        Sort sort = Sort.by(Sort.Direction.DESC,"id");
-        Pageable pageable = PageRequest.of(pageNumber,limit,sort);
-        List<TransactionDTO> transactionHistory = (List<TransactionDTO>) this.transactionConverter
-                                                .convertToListDto(
-                                                        this.transactionRepository
-                                                                .findAccountHistoryTransaction(accountId,pageable).toList()
-                                                );
+        Pageable pageable = PageRequest.of(pageNumber,limit,Sort.by(Sort.Direction.DESC,"id"));
+        List<Transaction> transactionHistory = this.transactionRepository.findAccountHistoryTransaction(accountId,pageable).toList();
         if(transactionHistory == null){
             throw new AppException(ErrorCode.NO_TRANSACTION_HISTORY,null);
         }
-        return transactionHistory;
+        List<TransactionDTO> transactionHistoryDTO = (List<TransactionDTO>) this.transactionConverter.convertToListDto(transactionHistory);
+        return transactionHistoryDTO;
     }
 
     @Override
@@ -77,6 +67,7 @@ public class TransactionService implements ITransactionService {
         try {
             TransactionResponse response = this.balanceClient.transferBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
+            transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
 //                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
@@ -99,6 +90,7 @@ public class TransactionService implements ITransactionService {
         try {
             TransactionResponse response = this.balanceClient.withdrawBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
+            transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
 //                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
@@ -121,6 +113,7 @@ public class TransactionService implements ITransactionService {
         try {
             TransactionResponse response = this.balanceClient.depositBalance(transactionDto).getBody();
             transactionDto = handlerResponse(transactionDto, response);
+            transactionRepository.save(transactionConverter.convertToEntity(transactionDto));
         } catch (FeignException e){
             if (e.getCause() instanceof SocketTimeoutException){
 //                askBalanceKafkaTemplate.send("ask-balance-topic",transactionDto);
@@ -141,8 +134,8 @@ public class TransactionService implements ITransactionService {
     public TransactionDTO initTransaction(TransactionDTO transactionDto) {
         Transaction transaction = transactionConverter.convertToEntity(transactionDto);
         transaction.setTransactionStatus(TransactionStatus.IN_PROCESS);
-        transaction = transactionRepository.save(transaction);
-        TransactionDTO transactionSended = transactionConverter.convertToDto(transaction);
+        Transaction transactionResponse = transactionRepository.save(transaction);
+        TransactionDTO transactionSended = transactionConverter.convertToDto(transactionResponse);
         return transactionSended;
     }
 
