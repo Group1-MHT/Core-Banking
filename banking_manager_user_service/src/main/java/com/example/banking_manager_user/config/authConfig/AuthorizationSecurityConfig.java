@@ -93,7 +93,7 @@ public class AuthorizationSecurityConfig {
                         .requestMatchers("/manager-user-service/a/**").hasAuthority("Admin")
                         .requestMatchers("/manager-user-service/as/**").hasAnyAuthority("Admin","Staff")
                         .requestMatchers("/manager-user-service/asu/**").hasAnyAuthority("Admin","Staff","User")
-                        .requestMatchers("manager-user-service/as/user/create").permitAll()
+                        .requestMatchers("/manager-user-service/as/user/create").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))

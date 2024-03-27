@@ -15,10 +15,10 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/**").permitAll()
                         .anyRequest().authenticated()
-                )
-                .csrf(csrf -> csrf.ignoringRequestMatchers(
-                        "/encrypt/**", "/decrypt/**"
-                ));
+                );
+//                .csrf(csrf -> csrf.ignoringRequestMatchers(
+//                        "/encrypt/**", "/decrypt/**"
+//                ));
         return http.build();
     }
 }

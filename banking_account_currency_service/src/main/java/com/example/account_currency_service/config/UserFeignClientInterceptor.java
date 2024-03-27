@@ -20,9 +20,7 @@ public class UserFeignClientInterceptor implements RequestInterceptor {
     }
     @Override
     public void apply(RequestTemplate requestTemplate) {
-
         requestTemplate.header(AUTHORIZATION_HEADER, getBearerTokenHeader());
-
     }
 
 
