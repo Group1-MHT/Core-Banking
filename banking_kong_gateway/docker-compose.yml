@@ -60,6 +60,18 @@ services:
     depends_on:
       - kong-database
       - kong-migrations
+  discovery-syncer:
+    build: .
+    ports:
+      - 8080:8080
+    networks:
+      - kong-net
+  eureka-server:
+    image: ygqygq2/eureka-server:latest
+    ports:
+      - 8761:8761
+    networks:
+      - kong-net
 
 #  consul:
 #    image: consul:1.15.4
