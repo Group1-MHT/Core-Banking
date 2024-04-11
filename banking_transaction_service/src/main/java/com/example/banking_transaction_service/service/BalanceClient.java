@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "balance", url = "http://localhost:9002/account-currency-service/", configuration = FeignClientInterceptor.class)
+@FeignClient(value = "KONG", url = "http://localhost:8000/account-currency-service", configuration = FeignClientInterceptor.class)
 public interface BalanceClient {
 
     @PostMapping("/su/withdraw")
@@ -21,3 +21,5 @@ public interface BalanceClient {
     ResponseEntity<TransactionResponse> transferBalance(@RequestBody TransactionDTO transaction);
 
 }
+
+

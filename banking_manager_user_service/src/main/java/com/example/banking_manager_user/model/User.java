@@ -1,5 +1,6 @@
 package com.example.banking_manager_user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,7 @@ public class User implements UserDetails {
     private String username;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "email")

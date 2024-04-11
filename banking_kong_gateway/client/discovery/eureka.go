@@ -115,9 +115,9 @@ func convertEurekaInstance(eurekaApps []model.EurekaInstance, defaultWeight floa
 		matches := HostPageRE.FindStringSubmatch(eurekaIns.HomePageUrl)
 
 		port, _ := strconv.Atoi(matches[HostPageRE.SubexpIndex("Port")])
-		instance := model.Instance{Ip: matches[HostPageRE.SubexpIndex("Ip")], Port: port,
-			Metadata: eurekaIns.Metadata, Weight: defaultWeight,
-			Ext: map[string]string{"instanceId": eurekaIns.InstanceId}}
+		instance := model.Instance{Ip: eurekaIns.IpAddr, Port: port,
+            Metadata: eurekaIns.Metadata, Weight: defaultWeight,
+            Ext: map[string]string{"instanceId": eurekaIns.InstanceId}}
 
 		instances = append(instances, instance)
 	}

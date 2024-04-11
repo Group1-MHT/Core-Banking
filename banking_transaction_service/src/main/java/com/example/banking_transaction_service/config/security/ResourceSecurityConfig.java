@@ -21,7 +21,7 @@ public class ResourceSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/transaction-service/asu/**").hasAnyRole("Admin","Staff","User")
+                        .antMatchers("/transaction-service/asu/**").hasAnyAuthority("Admin","Staff","User")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))))

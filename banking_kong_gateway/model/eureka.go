@@ -29,6 +29,7 @@ type EurekaApp struct {
 type EurekaInstance struct {
 	HomePageUrl string            `json:"homePageUrl"`
 	Status      string            `json:"status"`
+	IpAddr      string            `json:"ipAddr"`
 	Metadata    map[string]string `json:"metadata"`
 	InstanceId  string            `json:"instanceId"`
 }
