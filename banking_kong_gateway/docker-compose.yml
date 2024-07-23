@@ -19,7 +19,7 @@ services:
             - ./kong-data:/var/lib/postgresql/data
 
     kong-migrations:
-        image: kong/kong-gateway:latest
+        image: kong/kong-gateway:3.6-debian
         networks:
             - kong-net
         environment:
@@ -32,7 +32,7 @@ services:
             - kong-database
 
     kong-gateway:
-        image: kong/kong-gateway:latest
+        image: kong/kong-gateway:3.6-debian
         networks:
             - kong-net
         environment:
